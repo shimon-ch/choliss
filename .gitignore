@@ -1,0 +1,6 @@
+public/
+source/
+build/
+template/
+node_modules/
+.vscode/
