@@ -4,8 +4,10 @@
   "description": "",
   "main": "gulpfile.js",
   "scripts": {
-    "start": "gulp",
-    "destroy": "gulp destroy",
+    "dev": "gulp",
+    "start": "gulp fileCreate",
+    "delete": "gulp alldelete",
+    "bulild": "gulp build",
     "eslint": "eslint . --fix"
   },
   "author": "",
@@ -16,12 +18,14 @@
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
     "browser-sync": "^2.23.6",
     "css-mqpacker": "^6.0.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.10.0",
-    "gulp": "^4.0.0",
+    "gulp": "gulpjs/gulp#4.0",
+    "gulp-babel": "^7.0.1",
     "gulp-cached": "^1.1.1",
     "gulp-changed": "^3.2.0",
     "gulp-convert-encoding": "^1.0.0",
@@ -30,6 +34,7 @@
     "gulp-ejs": "^3.1.1",
     "gulp-front-matter": "^1.3.0",
     "gulp-imagemin": "^4.1.0",
+    "gulp-jsbeautifier": "^2.1.2",
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.0",
     "gulp-postcss": "^7.0.1",
@@ -52,7 +57,5 @@
       "env"
     ]
   },
-  "dependencies": {
-    "fs-extra": "^5.0.0"
-  }
+  "dependencies": {}
 }

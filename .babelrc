@@ -5,6 +5,5 @@
         "browsers": ["last 2 versions"]
       }
     }]
-  ],
-  "plugins": ["transform-runtime"]
+  ]
 }

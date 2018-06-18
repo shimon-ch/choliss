@@ -54,8 +54,6 @@ const dataFile = {
 }
 
 
-
-
 /* ==========================================
 ここまで
 ============================================= */
@@ -70,8 +68,10 @@ import path   from 'path';
 
 // UTILITY
 //--------------------
+import babel                from 'gulp-babel';
 import browserSync          from 'browser-sync';
 import cached               from 'gulp-cached';
+import prettify             from 'gulp-jsbeautifier';
 import changed              from 'gulp-changed';
 import cssmqpacker          from 'css-mqpacker';
 import csso                 from 'gulp-csso';
@@ -111,68 +111,73 @@ export function check(done) {
 // csvをjsonファイルに変換
 //--------------------
 
-export function fileCreate(done){
-  gulp.task('mkdirRoots', function(done) {
-    for (let key in rootPaths) {
-      fs.mkdir(rootPaths[key]);
-    }
-
-    done();
-  });
-
-  gulp.task('mkdirTools', function(done) {
-    for (let key in tools) {
-      fs.mkdir(rootPaths.src + tools[key]);
-    }
-
-    done();
-  });
-
-  gulp.task('mkdirData', function(done) {
-    for (let key in data) {
-      fs.mkdir(rootPaths.src + tools.data + data[key]);
-    }
-
-    done();
-  });
-
-  gulp.task('csvCreate', function(done){
-    for (let key in dataFile.dataname) {
-      let csvFilePath = rootPaths.src + dataCsv + key + '.csv';
-      let URL = dataFile.dataname[key];
-
-      https.get(URL, function (res) {
-        let responseString = '';
-        let resultObject = '';
-
-        res.on('data', function(chunk) {
-          responseString += chunk;
-        });
-
-        res.on('end', function() {
-          fs.appendFile(csvFilePath , responseString, function (err) {
-            console.log('CSVファイル出力に成功しました');
-          });
-        });
-      });
-    }
-
-    done();
-  });
-
-  gulp.task('csvToJson', function(done){
-    return gulp.src( rootPaths.src + dataCsv + '*.csv' )
-    .pipe(csvtojson({ toArrayString: true }))
-    .pipe(gulp.dest( rootPaths.src + dataJson )
-    .pipe(console.log('jsonファイルへ変換しました'));
-
-    done();
-  });
-
-
-  return gulp.series('mkdirRoots', 'mkdirTools', 'mkdirData', 'csvCreate', 'csvToJson')();
+gulp.task('mkdirRoots', done => {
+  for (let key in rootPaths) {
+    fs.mkdir(rootPaths[key]);
+  }
 
   done();
+});
+
+gulp.task('mkdirTools', done => {
+  for (let key in tools) {
+    fs.mkdir(rootPaths.src + tools[key]);
+  }
+
+  done();
+});
+
+gulp.task('mkdirData', done => {
+  for (let key in data) {
+    fs.mkdir(rootPaths.src + tools.data + data[key]);
+  }
+
+  done();
+});
+
+gulp.task('csvCreate', done => {
+  for (let key in dataFile.dataname) {
+    let csvFilePath = rootPaths.src + dataCsv + key + '.csv';
+    let URL = dataFile.dataname[key];
+
+    https.get(URL, function (res) {
+      let responseString = '';
+      let resultObject = '';
+
+      res.on('data', function(chunk) {
+        responseString += chunk;
+      });
+
+      res.on('end', function() {
+        fs.appendFile(csvFilePath , responseString);
+      });
+    });
+
+    console.log('CSVファイル出力に成功しました');
+  }
+
+  done();
+});
+
+gulp.task('csvToJson', done => {
+  setTimeout(() => {
+    return gulp.src( rootPaths.src + dataCsv + '*.csv' )
+    .pipe(csvtojson({ toArrayString: true }))
+    .pipe(prettify())
+    .pipe(gulp.dest( rootPaths.src + dataJson ));
+  }, 3000);
+
+  done();
+});
+
+export function fileCreate() {
+  return gulp.series(
+    'mkdirRoots',
+    'mkdirTools',
+    'mkdirData',
+    'csvCreate',
+    'csvToJson'
+  )();
 }
 
 
