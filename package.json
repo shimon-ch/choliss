@@ -8,7 +8,8 @@
     "start": "gulp fileCreate",
     "delete": "gulp alldelete",
     "bulild": "gulp build",
-    "eslint": "eslint . --fix"
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "author": "",
   "license": "ISC",
@@ -23,7 +24,9 @@
     "css-mqpacker": "^6.0.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "gulp": "gulpjs/gulp#4.0",
     "gulp-babel": "^7.0.1",
     "gulp-cached": "^1.1.1",
@@ -44,8 +47,7 @@
     "imagemin-mozjpeg": "^7.0.0",
     "imagemin-pngquant": "^5.0.1",
     "minimist": "^1.2.0",
-    "postcss-cssnext": "^3.1.0",
-    "postcss-flexbugs-fixes": "^3.3.0",
+    "postcss-preset-env": "^5.1.0",
     "prettier": "^1.11.1",
     "prettier-eslint": "^8.8.1",
     "prettier-eslint-cli": "^4.7.1",
@@ -56,6 +58,5 @@
     "presets": [
       "env"
     ]
-  },
-  "dependencies": {}
+  }
 }
