@@ -1,0 +1,35 @@
+/* =============================================================
+
+  side
+
+* ============================================================= */
+
+.l-side-nav{
+  position: fixed;
+  right: -70px;
+  bottom: 45px;
+  transition: all .3s;
+  
+  &._visible{
+    right: 3px;
+    transition: all .5s;
+  }
+  
+  &__item{
+    @include not-last{
+      margin-bottom: 10px;
+    }
+  }
+  
+  &-btn{
+    @include transition;
+    display: block;
+    cursor: pointer;
+    &:hover{
+      opacity: .7;
+    }
+    img{
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,301 @@
+///*==============================================================
+//
+// mixins
+//
+//==============================================================*/
+
+///* font-size
+//=============================== */
+
+@mixin font-size($value) {
+    font-size: ($value)*0.1rem;
+}
+@mixin fz($value) {
+    font-size: ($value)*0.1rem;
+}
+@mixin bold(){
+    font-weight: bold;
+}
+@function lhHalf($lh){
+  @return ($lh - 1)/2;
+}
+
+///* ellipsis
+//=============================== */
+
+@mixin text-truncate {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+@mixin ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+@mixin karning(){
+  font-feature-settings: "palt";
+}
+
+///* clearfix
+//=============================== */
+
+@mixin clearfix(){
+  &::after{
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    clear: both;
+  }
+}
+
+
+///* justify
+//=============================== */
+
+@mixin justify(){
+  text-align: justify;
+  text-justify: auto;
+}
+
+///* break-all
+//=============================== */
+
+@mixin break-all(){
+  word-break: break-all;
+}
+
+///* box-sizing
+//=============================== */
+
+@mixin bb(){
+  box-sizing: border-box;
+}
+
+@mixin inner(){
+  width: $width;
+  margin-left: auto;
+  margin-right: auto;
+  @include bb;
+}
+
+@mixin spreadBg(){
+  padding-left: 1000px;
+  padding-right: 1000px;
+  margin-left: -1000px;
+  margin-right: -1000px;
+}
+
+///* selector
+//=============================== */
+
+@mixin first() {
+  &:first-child {
+    @content;
+  }
+}
+@mixin last() {
+  &:last-child {
+    @content;
+  }
+}
+@mixin nth($n) {
+  &:nth-child(#{$n}) {
+    @content;
+  }
+}
+
+@mixin not-first() {
+  &:not(:first-child) {
+    @content;
+  }
+}
+@mixin not-last() {
+  &:not(:last-child) {
+    @content;
+  }
+}
+@mixin not-nth($n) {
+  &:not(:nth-child(#{$n})) {
+    @content;
+  }
+}
+
+
+///* transition
+//=============================== */
+
+@mixin transition($target:all .4s ease, $target2:null, $target3:null){
+  @if $target == null{
+    transition: none;
+  }
+  @elseif $target2 == null{
+    transition: $target;
+  }
+  @elseif $target3 == null{
+    transition: $target,$target2;
+  }
+  @else{
+    transition: $target,$target2,$target3;
+  }
+}
+
+
+///* transform
+//=============================== */
+
+@mixin transform($value){
+  transform: $value;
+}
+
+@mixin transform-origin($value){
+  transform-origin: $value;
+}
+
+
+///* flex
+//=============================== */
+
+@mixin flexX($value){
+  @if $value == center{
+    justify-content: center;
+  }
+  @if $value == start{
+    justify-content: flex-start;
+  }
+  @if $value == end{
+    justify-content: flex-end;
+  }
+  @if $value == between{
+    justify-content: space-between;
+  }
+  @if $value == around{
+    justify-content: space-around;
+  }
+  @if $value == stretch{
+    justify-content: stretch;
+  }
+}
+
+@mixin flexY($value){
+  @if $value == center{
+    align-items: center;
+  }
+  @if $value == start{
+    align-items: flex-start;
+  }
+  @if $value == end{
+    align-items: flex-end;
+  }
+  @if $value == between{
+    align-items: space-between;
+  }
+  @if $value == around{
+    align-items: space-around;
+  }
+  @if $value == stretch{
+    align-items: stretch;
+  }
+}
+
+///* keyframes
+//=============================== */
+
+@mixin keyframes($animation-name) {
+  @-webkit-keyframes #{$animation-name} {
+    @content;
+  }
+  @keyframes #{$animation-name} {
+    @content;
+  }
+}
+
+@mixin hover() {
+  &:hover{
+    opacity: .8;
+  }
+}
+
+
+///* grid
+//=============================== */
+
+@mixin grid($col) {
+  @if $col == 1{
+    width: 100%;
+    float: none;
+  }
+  @else{
+    width: 100%/$col;
+    float: left;
+
+    @for $i from $col through 5 {
+      @if $col != $i{
+        &:nth-of-type(#{$i}n+1){
+          clear: none;
+        }
+      }
+    }
+
+  }
+
+  &:nth-of-type(#{$col}n+1){
+    clear: both;
+  }
+}
+
+///* font-awesome用
+//=============================== */
+@mixin fa{
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+
+///* 自分はあんまり使わないもの
+//=============================== */
+
+@mixin link-color($color) {
+    color: $color;
+    // &:hover, &:active, &:focus, &:visited, &:link {
+    //     color: $color;
+    // }
+}
+
+@mixin border-radius($radius) {
+    border-radius: $radius;
+}
+
+@mixin opacity($opacity) {
+    opacity: $opacity;
+}
+
+@mixin box-shadow( $h: 10px, $v: 10px, $b: 0px, $s: 0px, $c: #000000) {
+    box-shadow: $h $v $b $s $c;
+}
+
+@mixin gradient($start-color, $start-line, $end-color, $end-line, $orientation) {
+    background: $start-color;
+    @if $orientation==vertical {
+        // vertical
+        background: linear-gradient(to bottom, $start-color $start-line, $end-color $end-line);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start-color', endColorstr='$end-color', GradientType=0 );
+    }
+    @else if $orientation==horizontal {
+        // horizontal
+        background: linear-gradient(to right, $start-color $start-line, $end-color $end-line);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start-color', endColorstr='$end-color', GradientType=1 );
+    }
+    @else {
+        // radial
+        background: radial-gradient(ellipse at center, $start-color $start-line, $end-color $end-line);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start-color', endColorstr='$end-color', GradientType=1 );
+    }
+}

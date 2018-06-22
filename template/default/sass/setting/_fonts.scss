@@ -1,0 +1,126 @@
+///*==============================================================
+//
+// fonts
+//
+//==============================================================*/
+
+
+//* YuGothic
+//=============================== */
+
+@mixin MyYuGothic(){
+  @font-face {
+    font-family: "MyYuGothicM";
+    font-weight: normal;
+    src: local("YuGothic-Medium"),
+         local("Yu Gothic Medium"),
+         local("YuGothic-Regular"),
+         local("YuGothic Medium");
+  }
+  @font-face {
+    font-family: "MyYuGothicM";
+    font-weight: bold;
+    src: local("YuGothic-Bold"),
+         local("Yu Gothic"),
+         local("YuGothic Bold");
+  }
+}
+
+
+//* WEB Font Settings
+//=============================== */
+
+$fontData :(
+  'shingoUD' : (
+    'L' : '"UD Shin Go Light"',
+    'R' : '"UD Shin Go Regular"',
+    'M' : '"UD Shin Go Medium"',
+    'DB': '"UD Shin Go DemiBold"',
+    'B' : '"UD Shin Go Bold"',
+    'H' : '"UD Shin Go Heavy"',
+    'U' : '"UD Shin Go Heavy"',
+  ),
+  'marugoUD' : (
+    'L' : '"UD Shin Maru Go Light"',
+    'R' : '"UD Shin Maru Go Regular"',
+    'M' : '"UD Shin Maru Go Medium"',
+    'DB': '"UD Shin Maru Go DemiBold"',
+    'B' : '"UD Shin Maru Go Bold"',
+    'H' : '"UD Shin Maru Go Heavy"',
+    'U' : '"UD Shin Maru Go Heavy"',
+  ),
+  'softGothic' : (
+    'L' : '"Soft Gothic Light"',
+    'R' : '"Soft Gothic Regular"',
+    'M' : '"Soft Gothic Medium"',
+    'DB': '"Soft Gothic DemiBold"',
+    'B' : '"Soft Gothic Bold"',
+    'H' : '"Soft Gothic Heavy"',
+    'U' : '"Soft Gothic Ultra"',
+  ),
+  'ShueiKakuGoGin' : (
+    'L' : '"Shuei KakuGo Gin L"',
+    'R' : '"Shuei KakuGo Gin L"',
+    'M' : '"Shuei KakuGo Gin L"',
+    'DB': '"Shuei KakuGo Gin B"',
+    'B' : '"Shuei KakuGo Gin B"',
+    'H' : '"Shuei KakuGo Gin B"',
+    'U' : '"Shuei KakuGo Gin B"',
+  ),
+  'UDReimin' : (
+    'L' : '"UD Reimin Light"',
+    'R' : '"UD Reimin Regular"',
+    'M' : '"UD Reimin Medium"',
+    'DB': '"UD Reimin Bold"',
+    'B' : '"UD Reimin ExtraBold"',
+    'H' : '"UD Reimin Heavy"',
+    'U' : '"UD Reimin Heavy',
+  ),
+);
+
+// 使用するWEBフォントを設定
+$default-web-font: "marugoUD";
+
+
+
+
+@function setWebFonts($fontType: 'R', $fontFamily: $default-web-font) {
+  @return unquote( map-get( map-get($fontData ,$fontFamily), $fontType) );
+}
+
+// デフォルトのフォント群
+$default-fonts : MyYuGothicM,"Yu Gothic",YuGothic,-apple-system,BlinkMacSystemFont,"メイリオ",Meiryo,"Hiragino Kaku Gothic ProN","ＭＳ Ｐゴシック","MS PGothic",Verdana,Helvetica,Arial,sans-serif;
+$bold-font : $default-fonts;
+
+
+$l-font:  setWebFonts("L"),  $default-fonts;
+$r-font:  setWebFonts("R"),  $default-fonts;
+$m-font:  setWebFonts("M"),  $default-fonts;
+$db-font: setWebFonts("DB"), $default-fonts;
+$b-font:  setWebFonts("B"),  $default-fonts;
+$h-font:  setWebFonts("H"),  $default-fonts;
+$u-font:  setWebFonts("U"),  $default-fonts;
+
+$l-shingo-font:  setWebFonts("L","shingoUD"),  $default-fonts;
+$r-shingo-font:  setWebFonts("R","shingoUD"),  $default-fonts;
+$m-shingo-font:  setWebFonts("M","shingoUD"),  $default-fonts;
+$db-shingo-font: setWebFonts("DB","shingoUD"), $default-fonts;
+$b-shingo-font:  setWebFonts("B","shingoUD"),  $default-fonts;
+$h-shingo-font:  setWebFonts("H","shingoUD"),  $default-fonts;
+$u-shingo-font:  setWebFonts("U","shingoUD"),  $default-fonts;
+
+
+// パーツごとのフォント
+$base-font:  $default-fonts;
+
+$en-font:  $default-fonts;
+
+$title-font: "PT Sans Narrow", $b-font;
+$point-font: $b-font;
+
+$gnav-font:  $b-font;
+
+//font
+$en-font: "Avenir Next", Verdana, Helvetica, Arial, sans-serif;
+$number-font: Arial,sans-serif;
+$calendar-font: 'Overpass', Arial, sans-serif;

@@ -1,0 +1,37 @@
+/* panel menu
+--------------------------- */
+
+.c-panel-menu {
+  display: table;
+  width: $width + (16px * 2);
+  margin-left: -16px;
+  border-collapse: separate;
+  border-spacing: 16px 0;
+  margin-bottom: 25px;
+  table-layout: fixed;
+  
+  &__item{
+    display: table-cell;
+    vertical-align: top;
+  }
+}
+
+.c-panel-banner {
+  display: block;
+  padding: 9px;
+  background-color: $white;
+  border: 1px solid $border-color;
+  transition: all .4s;
+  
+  &:hover{
+    opacity: 0.7;
+  }
+  
+  &._sm{
+    padding: 5px;
+  }
+
+  img{
+    display: block;
+  }
+}

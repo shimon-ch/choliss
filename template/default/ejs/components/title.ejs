@@ -1,0 +1,71 @@
+<%
+const title_order = data.getPageOrder(data.page);
+const title_list = [];
+const title_separater = " | ";
+
+// console.log(title_order);
+// 例 → ["inspection","maintenance","index"]
+
+/*
+ * title_orderに入っているpage_idを回して
+ * それぞれを適した文字列に変換して配列化
+ */
+for( var page_id of title_order ){
+
+	var page = data.getPageData(page_id);
+	var isToppage  = title_order[title_order.length-1] == page.id;
+	var isThispage = title_order[0] == page.id;
+
+
+	/*
+		indexは販社名に変換する
+	*/
+	if( isToppage ){
+		if( title_order.length === 1 ){
+			// トップページのタイトルの場合は販社名の後ろに「●●県のHondaディーラー」追加
+			title_list.push('<?php echo $CMN_hanshaName; ?> - <?php echo $CMN_prefName; ?>のHondaディーラー');
+		}else{
+			title_list.push('<?php echo $CMN_hanshaName; ?>');
+		}
+
+	}
+
+	/*
+		現在表示しているページのターンでカテゴリトップだったら
+		page_title + カテゴリ名をphpで出力
+	*/
+	else if( isThispage && data.isFrontPage(page.id) ){
+		var category_name = data.getCategoryData(page.category_id).name;
+		title_list.push('<?php echo $page_title; ?>');
+		title_list.push( category_name );
+	}
+	/*
+		現在表示しているページのターンだったらpage_titleをphpで出力
+	*/
+	else if( isThispage ){
+		var page_name = page.id !== "st" ? '<?php echo $page_title; ?>' : 'スタッフ紹介';
+		title_list.push(page_name);
+	}
+
+	/*
+		カテゴリトップのIDはカテゴリ名に変換する
+	*/
+	else if( data.isFrontPage(page.id) ){
+		var category_name = data.getCategoryData(page.category_id).name;
+		title_list.push( category_name );
+	}
+
+	/*
+		indexでもカテゴリトップでもない場合
+	*/
+	else{
+		title_list.push( data.addEcho(page.name) );
+	}
+}
+
+// 配列を文字列に連結
+const title_text = title_list.join(title_separater);
+
+
+data.component.result = title_text;
+%>

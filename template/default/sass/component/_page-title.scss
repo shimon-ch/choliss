@@ -1,0 +1,53 @@
+/* title
+--------------------------- */
+.c-main-title{
+  margin: 0 auto;
+  text-align: center;
+  font-size: 2.4rem;
+  letter-spacing: .15em;
+  padding-left: .15em;
+  @include  bold;
+  font-family: $m-font;
+  
+  ._sr &{
+
+    &:after{
+      content: "";
+      width: 36px;
+      height: 44px;
+      display: inline-block;
+      vertical-align: middle;
+      padding-left: 1em;
+    }
+  }
+  ._sr._ss &{
+    &:after{
+      background: url(../img/icon_logo_ss.gif) center center no-repeat;
+    }
+  }
+  ._sr._qs &{
+    &:after{
+      background: url(../img/icon_logo_qs.gif) center center no-repeat;
+    }
+  }
+  ._sr._ns &x{
+    &:after{
+      background: url(../img/icon_logo_nsx.gif) center center no-repeat;
+    }
+  }
+  ._sr._or &ange{
+    &:after{
+      background: url(../img/icon_logo_orange.gif) center center no-repeat;
+    }
+  }
+  ._sr._at &{
+    &:after{
+      background: url(../img/icon_logo_at.gif) center center no-repeat;
+    }
+  }
+  ._sr._hc &{
+    &:after{
+      background: url(../img/icon_logo_hc.gif) center center no-repeat;
+    }
+  }
+}

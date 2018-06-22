@@ -10,11 +10,12 @@
 //--------------------
 import 'babel-polyfill';
 import gulp from 'gulp';
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 
 // UTILITY
 //--------------------
+import autoprefixer from 'autoprefixer';
 import babel from 'gulp-babel';
 import browserSync from 'browser-sync';
 import cached from 'gulp-cached';
@@ -106,7 +107,11 @@ const dataFile = {
 //--------------------
 export const mkdirRoots = done => {
   for (const key in rootPaths) {
-    fs.mkdir(rootPaths[key]);
+    fs.mkdir(rootPaths[key], err => {
+      if (err) {
+        console.log('errorです');
+      }
+    });
   }
 
   done();
@@ -114,7 +119,11 @@ export const mkdirRoots = done => {
 
 export const mkdirTools = done => {
   for (const key in tools) {
-    fs.mkdir(rootPaths.src + tools[key]);
+    fs.mkdir(rootPaths.src + tools[key], err => {
+      if (err) {
+        console.log('errorです');
+      }
+    });
   }
 
   done();
@@ -122,7 +131,11 @@ export const mkdirTools = done => {
 
 export const mkdirData = done => {
   for (const key in data) {
-    fs.mkdir(rootPaths.src + tools.data + data[key]);
+    fs.mkdir(rootPaths.src + tools.data + data[key], err => {
+      if (err) {
+        console.log('errorです');
+      }
+    });
   }
 
   done();
@@ -135,14 +148,17 @@ export const csvCreate = done => {
 
     https.get(URL, res => {
       let responseString = '';
-      const resultObject = '';
 
       res.on('data', chunk => {
         responseString += chunk;
       });
 
       res.on('end', () => {
-        fs.appendFile(csvFilePath, responseString);
+        fs.writeFile(csvFilePath, responseString, err => {
+          if (err) {
+            console.log('errorです');
+          }
+        });
       });
     });
 
@@ -166,30 +182,51 @@ export const csvToJson = done => {
   done();
 };
 
-export const fileCreate = () => {
-  return gulp.series(mkdirRoots, mkdirTools, mkdirData, csvCreate, csvToJson)();
-};
+export const fileCopy = done => {
+  const args_setting = {
+    string: 'env',
+    default: {
+      default: process.env.NODE_ENV || 'default/',
+      hc: process.env.NODE_ENV || 'hc/',
+    },
+  };
 
-// minimist
-//--------------------
-export const fileCopy = () => {
-  const argv = minimist(process.argv.slice(2));
-  if (argv === '' || argv === 'default') {
+  const argv = minimist(process.argv.slice(2), args_setting);
+
+  console.dir(argv);
+
+  if (argv.default === true) {
     for (let tool in tools) {
-      fs.copyFile(
+      if (tool === 'data') continue;
+      fs.copySync(
         templatePath + 'default/' + tool + '/',
         rootPaths.src + tool + '/',
         () => {
-        console.log(i);
-      });
+          return console.log('template default ' + tool + ' をコピーしました');
+        }
+      );
     }
   } else {
     for (let tool in tools) {
-      fs.copyFile(templatePath + argv + '/', rootPaths.src, () => {
-        console.log(i);
+      if (tool === 'data') continue;
+      fs.copySync(templatePath + argv + '/*', rootPaths.src + tool + '/', () => {
+        return console.log('template ' + argv + tool + ' をコピーしました');
       });
     }
   }
+
+  done();
+};
+
+export const fileCreate = async () => {
+  return gulp.series(
+    mkdirRoots,
+    mkdirTools,
+    mkdirData,
+    csvCreate,
+    csvToJson,
+    fileCopy
+  )();
 };
 
 // BROWSER-SYNC
@@ -211,19 +248,25 @@ export const reload = () => {
 
 // EJS
 // --------------------
-export function html() {
-  return gulp
-    .src(`${rootPaths.src + tools.ejs}**/*.ejs`)
-    .pipe(cached('html'))
-    .pipe(progeny())
-    .pipe(
-      plumber({
-        errorHandler: notify.onError('<%= error.message %>'),
-      })
-    )
-    .pipe(ejs({}, {}, { ext: '.html' }))
-    .pipe(gulp.dest(rootPaths.dst));
-}
+export const html = () => {
+  let jsondata = rootPaths.src + dataJson + 'sitemap.json';
+
+  for (let index = 0; index < jsondata.length; index++) {
+    console.log(jsondata[index]);
+  }
+
+  // return gulp
+  //   .src(`${rootPaths.src + tools.ejs}**/*.ejs`)
+  //   .pipe(cached('html'))
+  //   .pipe(progeny())
+  //   .pipe(
+  //     plumber({
+  //       errorHandler: notify.onError('<%= error.message %>'),
+  //     })
+  //   )
+  //   .pipe(ejs({}, {}, { ext: '.html' }))
+  //   .pipe(gulp.dest(rootPaths.dst));
+};
 
 // SASS
 // --------------------

@@ -1,0 +1,70 @@
+<% include ../../../../function -%>
+<%
+data.tpl.default = {
+	'setting-php': [
+		"<?php\nrequire_once($_SERVER['DOCUMENT_ROOT'].'"+ data.settingRoot +"HP_BASE_SETTINGS.php');",
+		data.component('setting-php') + "?>\n"
+	],
+	'html' : [
+		'<html lang="ja">',
+		'</html>'
+	],
+	'head' : [
+		'<head>',
+		'</head>'
+	],
+	'meta' : [
+		'<?php include($webroot."'+ data.home +'include/include_meta.html"); ?>'
+	],
+	'title': [
+		'<title>' + data.component('title') + '</title>'
+	],
+	'link-rel': [
+		data.component('link-rel')
+	],
+	'body' : [
+		'<body class="l-page" data-id="' + data.page.id + '" data-category="'+ data.page.category_id +'">',
+		'</body>'
+	],
+	'wrapper' : [
+		'<div class="l-wrapper" id="js-wrapper">',
+		'</div>'
+	],
+	'main' : [
+		'<main class="l-main">',
+		'</main>'
+	],
+	'contents': [
+		'<div class="l-contents">',
+		'</div>'
+	],
+	'header' : [
+		'<?php include($webroot."'+ data.home +'include/include_header.html"); ?>'
+	],
+	'footer' : [
+		'<?php include($webroot."'+ data.home +'include/include_footer.html"); ?>'
+	],
+	'css' : [
+		'<?php include($webroot."'+ data.home +'include/include_css.html"); ?>'
+	],
+	'js' : [
+		'<?php include($webroot."'+ data.home +'include/include_js.html"); ?>'
+	],
+	'ga' : [
+		'<?php include($webroot."'+ data.settingRoot +'include_ga.html"); ?>'
+	],
+	'ga2' : [
+		'<?php include($webroot."'+ data.settingRoot +'include_ga2.html"); ?>'
+	],
+	'page-heading': [
+		'<div class="l-page-heading">',
+		'</div>'
+	],
+	'breadcrumbs': [
+		'<div class="l-breadcrumbs">' + data.component('breadcrumbs') + '</div>'
+	],
+	'ie' : [
+		'<?php include($webroot."'+ data.home +'include/include_ie.html"); ?>'
+	]
+};
+-%>

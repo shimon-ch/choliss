@@ -1,0 +1,148 @@
+/* =============================================================
+
+  main
+
+* ============================================================= */
+
+.l-placeholder{
+  width: 100%;
+  height: 300px;
+  display: flex;
+  background: #f8f8f8;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  line-height: 1.8;
+  @include bb;
+  
+  &:before{
+    content: "DEMO";
+    display: inline-block;
+    padding: .5em 1em;
+    color: #FFF;
+    background-color: #333;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  &:after{
+    content: "[アタリ]";
+    display: block;
+  }
+}
+
+
+/* main
+=============================== */
+.l-main {
+    width: 100%;
+    max-height: 100%;  // android font-size bug fix
+    position: relative;
+    padding: 0;
+}
+
+/* page-contents
+=============================== */
+.l-page-heading{
+  padding: 65px 0;
+  
+  &._sr{
+    padding-bottom: 25px;
+  }
+}
+
+.l-page-contents{
+  // padding-top: 75px;
+  padding-bottom: 105px;
+  position: relative;
+  overflow: hidden;
+
+  &._top-space{
+    padding-top: 75px;
+  }
+  &._no-top-space{
+    padding-top: 0;
+  }
+  &._no-bottom-space{
+    padding-bottom: 0;
+  }
+  &._no-space{
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* inner
+=============================== */
+
+.l-inner-heading{
+  width: $min-width;
+  padding: 1.5em 0;
+  border-top: 1px solid $border-color;
+  border-bottom: 1px solid $border-color;
+  // padding: 1.5em 2em;
+  // background-color: $bg-color-light;
+  color: $key-color-03;
+  margin: 0 auto 65px;
+  @include bb;
+}
+
+.l-inner{
+  @include inner;
+  @include clearfix;
+}
+
+.l-inner-contents{
+
+  @include inner;
+  @include clearfix;
+
+  margin-bottom: 70px;
+
+  @include last{
+    margin-bottom: 0;
+  }
+
+  &._bg{
+    background-color: $bg-color;
+    padding-top: 53px;
+    padding-bottom: 70px;
+    width: 100%;
+  }
+
+  &._close{
+    margin-bottom: 40px;
+  }
+  &._spacious{
+    margin-bottom: 110px;
+  }
+
+  &._wide{
+    width: 100%;
+    overflow: hidden;
+  }
+
+  &._both-space{
+    padding-top: 50px;
+    padding-bottom: 80px;
+  }
+  &._top-space{
+    padding-top: 80px;
+  }
+  &._bottom-space{
+    padding-bottom: 80px;
+  }
+  &._no-top-space{
+    padding-top: 0 !important;
+  }
+  &._no-bottom-space{
+    margin-bottom: 0 !important;
+  }
+  &._no-space{
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+

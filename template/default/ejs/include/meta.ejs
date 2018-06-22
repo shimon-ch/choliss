@@ -1,0 +1,10 @@
+<% include ../../../../function -%>
+<meta charset="shift_jis">
+<meta name="viewport" content="width=1080">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="format-detection" content="telephone=no">
+<?php
+$defalut_description = "{$CMN_prefName}のHonda正規ディーラー {$CMN_hanshaName} （{$CMN_corporateName}） のホームページです。新車、試乗車、自動車保険、点検・車検、整備。車のことなら何でもおまかせ下さい！";
+$matadescription    = !isset($metadescription) ? $defalut_description : $metadescription;
+?>
+<meta name="description" content="<?php echo $matadescription; ?>">

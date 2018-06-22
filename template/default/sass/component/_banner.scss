@@ -1,0 +1,24 @@
+/* banner
+--------------------------- */
+.c-banner{
+  max-width: $min-width;
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  cursor: pointer;
+  @include transition;
+  @include hover;
+  img{
+    display: block;
+  }
+}
+
+.c-banner-area{
+  width: $min-width;
+  margin: 0 auto;
+  padding: 52px 0 58px;
+  text-align: center;
+  img{
+    max-width: 100%;
+  }
+}

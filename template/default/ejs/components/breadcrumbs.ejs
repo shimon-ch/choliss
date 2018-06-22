@@ -1,0 +1,73 @@
+<%
+const bc_order = data.getPageOrder(data.page).reverse();
+// console.log(bc_order);
+// 例 → ["inspection","maintenance","index"]
+
+const bc_list = [];
+
+const indent = 2;
+const bc_opener      = data.addIndent(indent) + '<ol class="c-breadcrumbs">';
+const bc_item_opener = data.addIndent(indent+1) + '<li>';
+const bc_item_closer = '</li>';
+const bc_closer      = data.addIndent(indent) + '</ol>' + data.addIndent(indent-1);
+
+// トップページへのリンクテキスト
+const toppage_text = "HOME";
+
+/*
+ * bc_orderに入っているpage_idを回して
+ * それぞれを適した文字列に変換して配列化
+ */
+for( var page_id of bc_order ){
+
+	var page = data.getPageData(page_id);
+	var isToppage  = bc_order[0] == page.id;
+	var isThispage = bc_order[bc_order.length-1] == page.id;
+
+	/*
+		ページの種類によってテキストを設定
+	*/
+	var anchor_name;
+
+	if( isToppage ){
+		anchor_name = toppage_text;
+	}else if( isThispage ){
+		anchor_name = '<?php echo $page_title; ?>';
+	}else if( data.isFrontPage(page.id) ){
+		anchor_name = data.getCategoryData(page.category_id).name
+	}else{
+		anchor_name = data.getPageTitleById(page.id);
+	}
+
+
+	/*
+		現在のページでなければaタグで挟むを出力
+	*/
+	if( !isThispage ){
+		if( !page.htaccess ){
+			var item = '<a '+ data.setPageLink(page.id) +'>'+ anchor_name +'</a>';
+		}else{
+			var item = '<a '+ data.setPageLink(page.id,{suffix:'<?php echo $THIS_SR_CODE; ?>'}) +'>'+ anchor_name +'</a>';
+		}
+	}else{
+		var item = anchor_name;
+	}
+
+	/*
+		配列に保存
+	*/
+	bc_list.push(item);
+}
+
+/*
+	配列を文字列に連結
+*/
+const bc_text =  bc_opener
+				+ bc_item_opener
+				+ bc_list.join(bc_item_closer + bc_item_opener)
+				+ bc_item_closer
+				+ bc_closer;
+
+
+data.component.result = bc_text;
+%>

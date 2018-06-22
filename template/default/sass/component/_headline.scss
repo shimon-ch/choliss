@@ -1,0 +1,42 @@
+/* head-line
+--------------------------- */
+.c-head-line{
+  display: table;
+  @include font-size(22);
+  font-family: $b-font;
+  text-align: center;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  position: relative;
+  &-en{
+    color: $blue;
+    display: block;
+    @include font-size(12);
+    font-family: $b-font;
+    @include bold;
+    padding-top: 5px;
+    &:before{
+      content: "-";
+    }
+    &:after{
+      content: "-";
+    }
+  }
+}
+
+.c-sub-head-line{
+  font-family: $m-font;
+  font-size: 1.6rem;
+  &:before{
+    content: url(../img/icon_sub-title01.png);
+    vertical-align: -1px;
+    padding-right: 14px;
+  }
+  &_type_02{
+    &:before{
+      content: url(../img/icon_sub-title02.png);
+      vertical-align: -1px;
+      padding-right: 14px;
+    }
+  }
+}

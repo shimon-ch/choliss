@@ -1,0 +1,61 @@
+/* grid 
+=============================== */
+
+.c-grid{
+  width: 100%;
+  margin: 0 auto;
+  
+  &__inner{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  &__item{
+    display: block;
+    position: relative;
+    flex-grow: 1;
+  }
+
+  &._between{
+    .c-grid__inner{
+      justify-content: space-between;
+    }
+    .c-grid__item{
+      flex-grow: 0;
+    }
+  }
+
+  &._plaid{
+    border-bottom: 1px solid #ccc;
+    .c-grid__item{
+      border-top: 1px solid #ccc;
+    }
+  }
+
+
+  &._col2{
+    .c-grid__item{
+      width: 50%;
+    }
+    &._plaid{
+      .c-grid__item:nth-child(4n+2),
+      .c-grid__item:nth-child(4n+3) {
+        background-color: #f0f0f0;
+      }
+    }
+  }
+  &._col4{
+    .c-grid__item{
+      width: 25%;
+    }
+    &._plaid{
+      .c-grid__item:nth-child(8n+2),
+      .c-grid__item:nth-child(8n+4),
+      .c-grid__item:nth-child(8n+5),
+      .c-grid__item:nth-child(8n+7) {
+        background-color: #f0f0f0;
+      }
+    }
+  }
+}

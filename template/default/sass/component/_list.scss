@@ -1,0 +1,34 @@
+/* list
+=============================== */
+.c-items{
+  &__head{
+    color: $key-color-01;
+    margin-bottom: 0.8em;
+    @include bold;
+  }
+  &__list{
+    >li{
+      text-indent: -1em;
+      padding-left: 1em;
+      &:before{
+        content: "\30fb";
+      }
+      @include not-last{
+        margin-bottom: 0.5em;
+      }
+    }
+  }
+  &._count{
+    .c-items__list{
+      counter-reset: list;
+      > li{
+        text-indent: -1.66em;
+        padding-left: 1.66em;
+        &:before{
+          content: counter(list)"\FF09";
+          counter-increment: list;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+/* caution
+--------------------------- */
+.c-caution{
+  line-height: 2.2;
+  font-size: 1.4rem;
+  
+  > *{
+    text-indent: -1em;
+    padding-left: 1em;
+    @include justify;
+    &._highlight{
+      color: $key-color;
+    }
+    em{
+      @include bold;
+    }
+  }
+
+  &._indent3{
+    > *{
+      text-indent: -3em;
+      padding-left: 3em;
+    }
+  }
+  &._indent2half{
+    > *{
+      text-indent: -2.5em;
+      padding-left: 2.5em;
+    }
+  }
+
+}

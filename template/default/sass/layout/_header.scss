@@ -1,0 +1,182 @@
+/* =============================================================
+
+  header
+
+* ============================================================= */
+
+.l-header{
+  width: 100%;
+  background-color: #FFF;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  font-family: $gnav-font;
+  border-top: 4px solid $key-color-01;
+  border-bottom: 1px solid #C9C9C9;
+  @include bb;
+    
+  a{
+    text-decoration: none !important;
+  }
+
+  &-top{
+    width: $min-width;
+    margin: 0 auto;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include clearfix;
+    
+    &__left{
+      width: 66.666666%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0;
+      @include bb;
+    }
+    &__right{
+      width: 33.333333%;
+    }
+  }
+  
+  &-logo{
+    padding: 10px 0;
+    a{
+      display: block;
+      @include transition;
+      @include hover;
+    }
+    img{
+      display: block;
+      
+    }
+  }
+
+  &-shoulder{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    
+    &__item{
+      @include not-first{
+        margin-left: 6px;
+      }
+    }
+    &__button{
+      min-width: 90px;
+      height: 25px;
+      border-radius: 13px;
+      display: flex;
+      font-size: 1.2rem;
+      font-family: $m-font;
+      justify-content: center;
+      align-items: center;
+      background-color: #b1b1b1;
+      padding: 0 10px;
+      @include link-color($white);
+      @include transition;
+      @include bb;
+      
+      &:hover{
+        background-color: #595959;
+      }
+    }
+  }
+
+
+  &-nav{
+    background-color: $key-color-01;
+    border-bottom: 1px solid $white;
+
+    &__list{
+      width: $min-width;
+      margin: 0 auto;
+      display: flex;
+    }
+    &__item{
+      flex: 1 1 200px;
+      height: 74px;
+      position: relative;
+      
+      &:before{
+        content: "";
+        display: block;
+        width: 1px;
+        height: 54px;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        position: absolute;
+        background-color: rgba(#fff,.6);
+        z-index: 5;
+      }
+      @include last{
+        &:after{
+          content: "";
+          display: block;
+          width: 1px;
+          height: 54px;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          margin: auto 0;
+          position: absolute;
+          background-color: rgba(#fff,.6);
+          z-index: 5;
+        }
+      }
+
+    }
+    &__button{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+      position: relative;
+      font-size: 1.6rem;
+      height: 74px;
+      justify-content: center;
+      background-color: $key-color-01;
+      font-family: $m-font;
+      @include link-color($white);
+      @include transition;
+      
+      &:before{
+        content: "";
+        display: block;
+        width: 40px;
+        height: 27px;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        margin-bottom: 5px;
+      }
+      &._showroom:before{
+        background-image: url(../img/icon_showroom_w.png);
+      }
+      &._campaign:before{
+        background-image: url(../img/icon_campaign_w.png);
+      }
+      &._newcar:before{
+        background-image: url(../img/icon_newcar_w.png);
+      }
+      &._democar:before{
+        background-image: url(../img/icon_democar_w.png);
+      }
+      &._usedcar:before{
+        background-image: url(../img/icon_usedcar_w.png);
+      }
+      &._maintenance:before{
+        background-image: url(../img/icon_maintenance_w.png);
+      }
+      
+      &:hover,
+      .is-hover &{
+        // background-color: #000;
+        opacity: .8;
+      }
+    }
+  }
+}

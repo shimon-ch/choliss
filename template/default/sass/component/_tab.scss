@@ -1,0 +1,83 @@
+/* tab
+=============================== */
+.c-tab{
+  padding: 0 2000px;
+  margin: 0 -2000px 70px;
+  border-bottom: 2px solid #b9e55e;
+  
+  &__inner{
+    width: $width;
+    margin: 0 auto;
+    display: table;
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+  &__item{
+    display: table-cell;
+    padding: 0 10px;
+    vertical-align: top;
+  }
+
+  &-button{
+    color: #496f00;
+    cursor: pointer;
+    background-color: transparent;
+    text-align: center;
+    font-size: 1.6rem;
+    display: block;
+    padding: 1.2em .8em;
+    position: relative;
+    text-decoration: none;
+    border: 2px solid #b9e55e;
+    border-bottom-width: 0;
+    @include transition;
+    
+    &._2row{
+      padding: .6em .8em .4em;
+    }
+    
+    &:after{
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      border-width: 12px 11px;
+      border-style: solid;
+      border-color: transparent;
+      border-top-color: #b9e55e;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      opacity: 0;
+      transition: all .4s ease;
+    }
+    &:hover{
+      background-color: #b9e55e;
+    }
+    
+    &.is-active{
+      background-color: #b9e55e;
+      &:after{
+        bottom: -24px;
+        opacity: 1;
+      }
+    }
+  }
+
+  &-contents{
+    display: none;
+    margin-bottom: 75px;
+    
+    &._no-space{
+      margin-bottom: 0;
+    }
+    
+    &.is-active{
+      display: block;
+    }
+  }
+
+}

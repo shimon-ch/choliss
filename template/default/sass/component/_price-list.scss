@@ -1,0 +1,170 @@
+ /* price-list
+=============================== */
+.c-price-list{
+  border-collapse: separate;
+  border-spacing: 1px;
+  box-sizing: border-box;
+  table-layout: fixed;
+  text-align: center;
+  font-weight: 500;
+  width: 100%;
+  thead{
+    th{
+      background-color: #333;
+      border-top: 1px solid #333;
+      border-left: 1px solid #333;
+      border-right: 1px solid #8b8b8b;
+      border-bottom: 1px solid #8b8b8b;
+      box-sizing: border-box;
+      color: $white;
+      height: 62px;
+      vertical-align: middle;
+    }
+    td{
+      background-color: #eee;
+      border-top: 1px solid $white;
+      border-left: 1px solid $white;
+      border-right: 1px solid #333;
+      border-bottom: 1px solid #333;
+      color: $black;
+      box-sizing: border-box;
+      font-family: $base-font;
+      vertical-align: middle;
+    }
+  }
+  tbody{
+    th{
+      border-top: 1px solid $white;
+      border-left: 1px solid $white;
+      border-right: 1px solid #333;
+      border-bottom: 1px solid #333;
+      box-sizing: border-box;
+      font-family: $db-font;
+      height: 62px;
+      letter-spacing: -1px;
+      vertical-align: middle;
+      sup{
+        font-size: .8rem;
+        vertical-align: top;
+      }
+      &._recommend{
+        background-color: #fce8ea !important;
+        color: #f25163 !important;
+        > span{
+          display: block;
+          width: 5.2em;
+          margin: 0 auto 3px;
+          background-color: #5cd2d4;
+          color: #FFF;
+          font-size: 1.5rem;
+          padding: 0 10px;
+        }
+      }
+    }
+    td{
+      text-align: center;
+      border-top: 1px solid $white;
+      border-left: 1px solid $white;
+      border-right: 1px solid #333;
+      border-bottom: 1px solid #333;
+      box-sizing: border-box;
+      vertical-align: middle;
+    }
+    .c-price-list-row--type01{
+      th{
+        background-color: #e9f2d8;
+        color: #496f00;
+      }
+      &._total{
+        th{
+          background-color: #b8e65f;
+          color: #496f00;
+        }
+        td{
+          background-color: #e9f2d8;
+        }
+      }
+    }
+
+    .c-price-list-row--type02{
+      th{
+        background-color: #e8f6f7;
+        color: #00797b;
+      }
+      &._total{
+        th{
+          background-color: #9ce0e1;
+          color: #00797b;
+        }
+        td{
+          background-color: #e8f6f7;
+        }
+      }
+    }
+
+    .c-price-list-row--type03{
+      &._total{
+        th{
+          background-color: #f25163;
+          color: $white;
+        }
+        td{
+          background-color: #fce8ea;
+          color: #f25163;
+          font-size: 2rem;
+          font-weight: 700;
+        }
+      }
+    }
+
+    .c-price-list-row--type04{
+      th{
+        background-color: #e9f2d8;
+        color: #496f00;
+      }
+      td{
+        color: #76af00;
+        font-size: 2rem;
+        font-weight: 700;
+      }
+    }
+  }
+  &__data{
+    display: block;
+    padding-bottom: 5px;
+    width: 100%;
+    text-align: right;
+  }
+}
+
+.price01,
+.price02,
+.price03{
+  &:after{
+    content: "円";
+    display: inline;
+  }
+}
+
+.c-price-caution{
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.75;
+  padding-top: 22px;
+  &__item{
+    text-indent: -1.6em;
+    padding-left: 1.6em;
+    span{
+      color: #76af00;
+    }
+    a{
+      &:hover{
+        text-decoration: none;
+      }
+    }
+    &:before{
+      content: "※";
+      padding-right: .5em;
+    }
+  }
+}

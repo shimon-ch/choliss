@@ -1,0 +1,16 @@
+<% include ../../../../function -%>
+<% include ./_default -%>
+<% include('../../../../'+ data.path.local[data.device].ejs +'extends/'+ data.page.id,{data:data}) -%>
+<%- data.tpl('<setting-php>'); -%>
+<%- data.tpl('</setting-php>'); -%>
+<!DOCTYPE html>
+<%- data.tpl('<html>'); %>
+<%- data.tpl('<head>'); %>
+<meta http-equiv="refresh" content="0;URL=<%- data.page.link.replace('${data.home}',data.home).replace('${data.root}',data.root) %>">
+<%- data.tpl('<title/>'); %>
+<%- data.tpl('<ga/>'); %>
+<%- data.tpl('</head>'); %>
+<%- data.tpl('<body>'); %>
+<%- data.tpl('<ga2/>'); %>
+<%- data.tpl('</body>'); %>
+<%- data.tpl('</html>'); %>

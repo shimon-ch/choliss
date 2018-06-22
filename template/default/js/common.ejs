@@ -1,0 +1,97 @@
+'use strict';
+
+var MutJs = MutJs || {};
+var MutCalendar = MutCalendar || {};
+
+(function() {
+
+    var $win   = $(window);
+    var scrollEventTimer = null;
+    MutJs.scrollTop = 0;
+    
+    MutJs.Init = function() {
+        this.headerFixed  = false;
+        this.setTelLink();
+        this.setHeader();
+        this.setFooter();
+        this.removeLoader();
+    };
+
+    /* for footer fixed
+    =============================== */
+    MutJs.Init.prototype.setFooterPosition = function() {
+    }
+
+
+    /* footer
+    =============================== */
+    MutJs.Init.prototype.setFooter = function() {
+    }
+
+
+    /* header
+    =============================== */
+    MutJs.Init.prototype.setHeader = function() {
+    }
+
+
+    /* スマホ電話番号
+    =============================== */
+    MutJs.Init.prototype.setTelLink = function() {
+      if ( ( mutUA.Mobile || mutUA.Tablet ) && !mutUA.Desktop ) {
+        $('.js-tel').each(function() {
+            var txt = $(this).text();
+            $(this).addClass('_active');
+            $(this).attr('href', 'tel:' + txt.replace(/-/g, ''));
+        });
+      }
+    }
+
+
+    /* Loader解除
+    =============================== */
+    MutJs.Init.prototype.removeLoader = function() {
+        setTimeout(function() {
+            $("#js-wrapper").animate({
+                opacity: 1
+            }, 300, "easeOutQuad");
+        }, 200);
+    }
+
+
+    /* 発動
+    =============================== */
+
+    function onLoad() {
+        MutJs.init = new MutJs.Init();
+        onScroll();
+    }
+
+
+    function onScrolled() {
+        MutJs.scrollTop = $win.scrollTop();
+    }
+
+    function onScroll(){
+        clearTimeout(scrollEventTimer);
+        scrollEventTimer = setTimeout(function() {
+            onScrolled();
+        }, 20 );
+    }
+
+    $win.on({ 'load': onLoad, 'scroll': onScroll });
+
+})();
+
+
+/* アンカースクロール
+=============================== */
+$('#js-wrapper').on('click','.js-scroll', function(e) {
+    e.preventDefault();
+    var speed    = 500;
+    var fixHeaderHeight = (MutJs.init.headerFixed) ? 86 : 0;
+    var href     = $(this).attr("href");
+    var $target  = $(href == "#" || href == "" ? 'html' : href);
+    var position = $target.offset().top - fixHeaderHeight;
+    $("html, body").animate({scrollTop:position}, speed, "easeOutSine");
+});

@@ -1,0 +1,194 @@
+/* ===============================
+
+点検項目の図に指示線を引く
+
+===============================*/
+function maintenanceFig(settings){
+
+    // デフォルトの設定
+    var defaults = {
+        'container'     : '#js-inspection-fig',       // 図のコンテナ要素のセレクタ
+        'image'         : '#js-inspection-fig-image', // 図のimage要素のセレクタ
+        'margin-bottom' : 25, // 点検項目間のmargin-bottomに指定している値
+        'header-height' : 28, // 点検項目のタイトルの枠の高さ
+        'border-width'  : 2,  // 図を指す線の太さ
+        'points'        : {   // 各点検項目ごとの座標をimg領域に対するパーセントで指定 [x,y]
+          'inside'   : [33, 25],
+          'engine'   : [15, 38],
+          'foot'     : [88, 65],
+          'under'    : [60, 70],
+          'lamp'     : [20, 51],
+          'battery'  : [20, 38],
+          'crutch'   : [44, 62],
+          'brake'    : [86, 62],
+          'tire'     : [92, 65],
+          'steering' : [36, 29]
+        }
+    };
+
+    // 引数に設定があればデフォルトを上書きする
+    settings = typeof settings === "undefined" ? {} : settings;
+    settings = $.extend(true, defaults, settings);
+
+    // 図全体を囲む要素
+    var $container    = $(settings.container),
+        containerW    = $container.width(),
+        containerPosT = $container.offset().top,
+        containerPosL = $container.offset().left;
+
+    // image要素
+    var $img = $(settings.image),
+        imgH = $img.height(),
+        imgX = $img.offset().left - containerPosL;
+
+    // 細かい計算で使う各数値を変数に代入
+    var bdrW          = settings['border-width'],
+        bdrPx         = String(bdrW).indexOf('px') !== -1 ? bdrW : bdrW + 'px',
+        hdrH          = settings['header-height'],
+        itemSeparateY = settings['margin-bottom'],
+        itemSeparateX = containerW * 0.01;
+
+
+    // image要素
+    $.each(settings.points, function(name, arr) {
+      var $item = $container.find('[data-point="'+ name +'"]');
+
+      if( $item.length ){
+
+        // 各点検項目の箱のコンテナ基準の座標を取得
+        var itemW = $item.width(),
+            itemY = $item.offset().top  - containerPosT,
+            itemX = $item.offset().left - containerPosL;
+
+        // 座標に空のspan要素を追加
+        $('<span></span>').addClass('_'+ name)
+                          .css('left', arr[0]+'%')
+                          .css('top',  arr[1]+'%')
+                          .appendTo($img);
+
+        // 追加した座標を$dotとし、コンテナ基準の座標を取得
+        var $dot = $container.find('._'+ name),
+            dotY = $dot.offset().top  - containerPosT,
+            dotX = $dot.offset().left - containerPosL;
+
+        // 線と接合する点のX座標とY座標
+        var jointPointX = itemX == 0 ? itemW : itemX; //itemが最左の要素だったら右端を接合部にする
+        var jointPointY = itemY + hdrH / 2;  // itemの上辺からタイトルの高さの1/2分下げた箇所を接合部にする
+
+        
+        /* [itemPosY]
+
+            middle : 接合部のY座標が imgの上部15%の高さ～下部15% の間である場合
+                    -> 画像と重なる部分を減らすために線の形を2回折れる線にする
+                    　　 ex ) →↑→ / →↓→ / ←↑← / ←↓←
+
+            bottom : 接合部のY座標が imgの下辺を超えていたら
+                    -> 画像と重なる部分を減らすために線の形を2回折れる線にする
+                       ex ) ↑→↑ / ↑←↑
+        =============================== */
+        if( imgH * 0.15 < jointPointY && jointPointY < imgH * 0.85 ){
+            var itemPosY = 'middle';
+        }else if( jointPointY > imgH ){
+            var itemPosY = 'bottom';
+        }
+
+        // dotの位置が画像の上半分・下半分どちらにあるか
+        var dotSideY = dotY < imgH * 0.5 ? 'top' : 'bottom';
+
+        // jointがdotに対して左右どちらにあるか
+        var jointSideX = dotX > jointPointX ? 'left' : 'right';
+
+        // jointがdotに対して上下どちらにあるか
+        var jointSideY = dotY > jointPointY ? 'top' : 'bottom';
+
+        // 渡された引数の逆を返す
+        var getOpposite = function(direction){
+            if( direction == "left"){
+                return "right";
+            }else if( direction == "right" ){
+                return "left";
+            }else if( direction == "top"){
+                return "bottom";
+            }else if( direction == "bottom" ){
+                return "top";
+            }
+            return false;
+        }
+
+        // 下から上のdotに向かってまっすぐに線を伸ばすと被りすぎるため左から回り込むようにする
+        //   ※右上のdotを下から指さなければいけない状況は発生しなさそうなので左下のitemからのみを対象にする
+        var shouldLineAround = dotSideY === "top" && itemX === 0;
+
+
+        if( itemPosY === "bottom" ){
+            jointPointY = itemY; // Y接合部をitemの上辺に再設定
+
+            if( !shouldLineAround ){
+                jointPointX = itemX + itemW / 2; // X接合部をitemの幅に対して左右中央に再設定
+            }else{
+                jointPointX = imgX + itemSeparateX;  // X接合部をimgの左端に再設定
+            }
+
+            jointSideX  = dotX > jointPointX ? 'left' : 'right'; // 接合部を再設定したので再判定
+        }
+
+        var lineLengthX = Math.abs(jointPointX - dotX); // 線の形を作る矩形の左右方向の長さ
+        var lineLengthY = Math.abs(jointPointY - dotY); // 線の形を作る矩形の上下方向の長さ
+        var lineBdrDrcX = getOpposite(jointSideX);      // 線の形を作る矩形の左右どちらにボーダーを出すか
+        var lineBdrDrcY = jointSideY;                   // 線の形を作る矩形の上下どちらにボーダーを出すか
+
+        if( itemPosY === 'middle' ){
+            // あとで線を継ぎ足すのでその線の分の長さを引いておく
+            lineLengthX = lineLengthX - itemSeparateX;
+
+            // ボーダーを出す方向を平常時とは逆方向に変更
+            lineBdrDrcX = jointSideX;
+            lineBdrDrcY = getOpposite(jointSideY);
+        }
+
+        if( itemPosY === "bottom" ){
+            if( !shouldLineAround ){
+                // あとで線を継ぎ足すのでその線の分の長さを引いておく
+                lineLengthY = lineLengthY - itemSeparateY / 2;
+            }else{
+                // ボーダーを出す方向を平常時とは逆方向に変更
+                lineBdrDrcX = jointSideX;
+                lineBdrDrcY = getOpposite(jointSideY);
+            }
+        }
+        
+        var lineOriginX = getOpposite(jointSideX); // 線の形を作る矩形の左右どちらの頂点をdotに重ねるか
+        var lineOriginY = getOpposite(jointSideY); // 線の形を作る矩形の上下どちらの頂点をdotに重ねるか
+
+        var dotClass = $item.hasClass('_option') ? '_option' : '_regular'; // 線の色を変えるためのクラス
+
+        $('<i></i>').addClass(dotClass)
+                    .width(lineLengthX)
+                    .height(lineLengthY)
+                    .css(lineOriginX, 0)
+                    .css(lineOriginY, 0)
+                    .css('border-'+ lineBdrDrcX +'-width', bdrPx)
+                    .css('border-'+ lineBdrDrcY +'-width', bdrPx)
+                    .appendTo($dot);
+
+        // 2回折るための線を継ぎ足す
+        if( itemPosY === 'middle' ){
+            $('<i></i>').css('width', itemSeparateX)
+                        .css('border-top-width', bdrPx)
+                        .css(jointSideY, 0)
+                        .css(getOpposite(jointSideX), 'calc(100% + '+ bdrPx +')')
+                        .appendTo( $dot.children('i') );
+        }
+
+        // 2回折るための線を継ぎ足す
+        if( itemPosY === "bottom" && !shouldLineAround ){
+            $('<i></i>').css('height', itemSeparateY / 2)
+                        .css(jointSideX , 0)
+                        .css('border-left-width', bdrPx)
+                        .css('top', 'calc(100% + '+ bdrPx +')')
+                        .appendTo( $dot.children('i') );
+        }
+
+      }
+    });
+}

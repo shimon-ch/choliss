@@ -1,0 +1,59 @@
+///*==============================================================
+//
+// size
+//
+//==============================================================*/
+
+$width: 1200px;
+$max-width: 100%;
+$min-width: 1200px;
+
+$w_desktop: '1100px';
+$w_tablet:  '768px';
+$w_mobile:  '480px';
+$w_mobile_sm: '360px';
+
+///* media query
+//=============================== */
+
+@mixin max-screen($break-point) {
+  @media screen and (max-width: $break-point) {
+    @content;
+  }
+}
+
+@mixin min-screen($break-point) {
+  @media screen and (min-width: $break-point) {
+    @content;
+  }
+}
+
+@mixin screen($break-point-min, $break-point-max) {
+  @media screen and (min-width: $break-point-min) and (max-width: $break-point-max) {
+    @content;
+  }
+}
+
+// /* breakpoints
+// =============================== */
+
+// メディアクエリで使うようのサイズ一覧
+
+// 大 > 小 の順に書いてください
+$mqsize: (
+  'desktop' : $w_desktop,
+  'tablet'  :  $w_tablet,
+  'mobile'  :  $w_mobile,
+  'mobile_sm' : $w_mobile_sm
+);
+
+  // 上の $mqsize にまとめたサイズに対して大きい順にコメントだけ入れたmediaクエリの記述を吐く
+
+      // cssmqpacker （mediaクエリを一つにまとめてくれるもの） は
+      // サイズの大小にかかわらずcss内を上から順に見て、
+      // 出てきた順にmediaクエリを並べるので、これがないとサイズごとの優先度がバラバラになってしまう。
+
+  @each $mqsize_name, $mqsize_width in $mqsize {
+    @include max-screen(#{$mqsize_width}){/* for #{$mqsize_name} */
+    }
+  }

@@ -1,0 +1,125 @@
+/* align & float
+====================================== */
+.u-ta-left{text-align: left !important;}
+.u-ta-right{text-align: right !important;}
+.u-ta-center{text-align: center !important;}
+
+.u-fl-left{float: left !important;}
+.u-fl-right{float: right !important;}
+.u-fl-center{float: center !important;}
+
+
+/* width
+====================================== */
+
+// PX WIDTH
+
+// 200までは5px刻み
+@for $i from 1 through 40 {
+  .u-w-#{$i * 5}{width: #{$i * 5}px !important;}
+}
+// 200からは10px刻み
+@for $i from 21 through 100 {
+  .u-w-#{$i * 10}{width: #{$i * 10}px !important;}
+}
+
+
+@for $i from 1 through 8 {
+  .u-w-#{$i}col{width: #{100 / $i}% !important;}
+}
+
+/* margin & padding
+====================================== */
+.u-mv-auto{margin: 0 auto;}
+.u-mh-auto{margin: auto 0;}
+
+$directionlist: (
+  't' : 'top',
+  'b' : 'bottom',
+  'l' : 'left',
+  'r' : 'right',
+);
+
+@each $selector,$property in $directionlist {
+
+  // margin
+  @for $i from 1 through 40 {
+    .u-m#{$selector}-#{$i*5}{margin-#{$property}:#{$i*5}px !important;}
+  }
+  // negative margin
+  @for $i from 1 through 40 {
+    .u-nm#{$selector}-#{$i*5}{margin-#{$property}:-#{$i*5}px !important;}
+  }
+  // padding
+  @for $i from 1 through 40 {
+    .u-p#{$selector}-#{$i*5}{padding-#{$property}:#{$i*5}px !important;}
+  }
+
+}
+
+
+/* font-size
+====================================== */
+
+@for $i from 10 through 30 {
+  .u-fs-#{$i}{font-size: #{$i/10}rem !important;}
+}
+
+
+/* display
+====================================== */
+.u-d-block{display: block !important;}
+.u-d-none{display: none !important;}
+.u-d-inline{display: inline !important;}
+.u-d-ib{display: inline-block !important;}
+
+.u-pos-static{position: static !important;}
+.u-pos-relative{position: relative !important;}
+.u-pos-absolute{position: absolute !important;}
+.u-pos-fixed{position: fixed !important;}
+
+
+/* clear
+====================================== */
+.u-clearfix:after{
+  content: "";
+  visibility: hidden;
+  display: block;
+  clear: both;
+}
+
+
+/* utility
+====================================== */
+.u-strong{font-weight: bold !important;}
+
+.u-pointer{
+  cursor: pointer;
+}
+.u-nowrap{
+  white-space: nowrap;
+}
+
+.u-hover{
+  @include transition;
+  &:hover{
+    opacity: .7;
+  }
+}
+
+.u-color-red{
+  color: $highlight-color !important;
+}
+.u-color-ciao{
+  color: #0068b6 !important;
+}
+
+.u-rotate-90{
+  transform: rotate(90deg);
+}
+
+///* include用。スマホのみのコンテンツを消す
+//====================================== */
+.u-sp-only{
+  display: none !important;
+}

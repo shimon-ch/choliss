@@ -1,0 +1,172 @@
+/* =============================================================
+
+  footer
+
+* ============================================================= */
+
+.l-footer {
+  width: 100%;
+  background-color: #eee;
+  padding: 0 0 0;
+  
+  &-sitemap{
+    display: flex;
+    width: $min-width;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 50px 0;
+        
+    &__col{
+    
+      @include not-last{
+        padding-right: 25px;
+      }
+      // @include nth(3){
+      //   flex: 2 1 auto;
+      // }
+    }
+    
+    &-box{
+      font-size: 1.4rem;
+      text-align: left;
+      color: #595959;
+      
+      @include not-last{
+        margin-bottom: 40px;
+      }
+      &__head{
+        margin-bottom: 10px;
+        padding-right: 1.5em;
+        padding-bottom: 4px;
+        line-height: 22px;
+        border-bottom: 2px solid;
+        position: relative;
+        font-family: $m-font;
+        @include bold;
+        backface-visibility: hidden;
+        
+        &:before{
+          display: block;
+          float: left;
+          margin-left: 4px;
+          margin-right: 10px;
+        
+          .l-footer-sitemap-box[data-category="car"] &{
+            content: url(../img/icon_car.png);
+          }
+          .l-footer-sitemap-box[data-category="showroom"] &{
+            content: url(../img/icon_showroom.png);
+          }
+          .l-footer-sitemap-box[data-category="maintenance"] &{
+            content: url(../img/icon_maintenance.png);
+          }
+          .l-footer-sitemap-box[data-category="campaign"] &{
+            content: url(../img/icon_campaign.png);
+          }
+          .l-footer-sitemap-box[data-category="company"] &{
+            content: url(../img/icon_company.png);
+          }
+        
+        }
+        
+        a{
+          text-decoration: none;
+          &:hover{
+            text-decoration: underline;
+          }
+        }
+      }
+
+      &__body{
+        display: flex;
+        width: 100%;
+      }
+    }
+
+    &-pages{
+      padding: 0 5px;
+      @include bb;
+      overflow: hidden;
+      flex: 1 1;
+
+      > li{
+        margin-top: 10px;
+        @include bold;
+        a{
+          text-decoration: none;
+          display: inline-block;
+          @include link-color(#595959);
+          @include transition(all .4s ease-out);
+          &:hover{
+            transform: translateX(3px);
+          }
+        }
+      }
+    }
+  }
+
+  &-info{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #535353;
+    line-height: 1.5;
+    font-size: 1.2rem;
+    
+    &__inner{
+      width: $min-width;
+      margin: 0 auto;
+      display: flex;
+      width: 100%;
+      height: 87px;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    
+    &__row{
+      color: #FFF;
+      padding: .3em 0;
+      p{
+        display: inline-block;
+        vertical-align: middle;
+        @include not-last{
+          padding-right: 1em;
+        }
+      }
+    }
+
+  }
+}
+
+
+/* =============================================================
+
+  pagetop
+
+* ============================================================= */
+
+.l-pagetop{
+  display: block;
+  width: 50px;
+  height: 55px;
+  position: fixed;
+  right: 0;
+  top: 40%;
+  bottom: 0;
+  margin: auto 0;
+  transition: all .5s;
+  @include hover;
+  z-index: 100;
+  
+  img{
+    display: block;
+    transition: all .5s;
+    
+    @include max-screen($w_desktop){
+      opacity: .6;
+    }
+  }
+
+}

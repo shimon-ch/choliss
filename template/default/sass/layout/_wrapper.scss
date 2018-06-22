@@ -1,0 +1,96 @@
+/* =============================================================
+
+    Base
+
+* ============================================================= */
+
+@include MyYuGothic();
+
+html {
+    font-size: 62.5%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: $base-font;
+    width: 100%;
+    height: 100%;
+    font-size: 1.4rem;
+    letter-spacing: 0.03em;
+    color: $body-color;
+    background-color: #fff;
+    line-height: 1.4;
+    -webkit-text-size-adjust: 100%;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+
+a{
+  @include link-color($body-color);
+  text-decoration: underline;
+  &:hover{
+    text-decoration: none;
+  }
+  &.js-tel{
+    text-decoration: none !important;
+    &._active{
+      text-decoration: underline !important;
+    }
+  }
+}
+
+#googleAnalyticsImageObj {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.l-wrapper {
+    width: 100%;
+    min-width: $min-width;
+    max-width: 1920px;
+    min-height: 100%;
+    padding: 0;
+    position: relative;
+    background-color: #FFF;
+    box-sizing: border-box;
+    margin: 0 auto;
+    box-shadow: 0 0 3px 3px rgba(99,99,99,.2);
+}
+.l-inner {
+    width: $min-width;
+    margin: 0 auto;
+    position: relative;
+}
+
+
+/* for footer fix
+=============================== */
+.l-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.l-main{
+    flex-grow: 1;
+}
+
+
+/* show IE
+=============================== */
+
+.showIE{
+  margin: 10px;
+  display: block;
+  border: 4px double #f00;
+  line-height: 1.8;
+  padding: 30px 35px;
+
+  &__text{
+    @include not-last{
+      margin-bottom: 10px;
+    }
+  }
+}

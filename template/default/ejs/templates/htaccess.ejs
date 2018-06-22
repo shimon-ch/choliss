@@ -1,0 +1,15 @@
+<% include ../../../../function -%>
+RewriteEngine On
+RewriteBase <%- data.home %>
+<%
+var currentNumberPrefix = data.device === "pc" ? data.config.output.prefix.number : "";
+
+// htaccess がtrueならrewriteを出力
+for (var thisPage of data.pages) {
+	if ( thisPage.htaccess ){
+-%>
+RewriteRule ^<%- currentNumberPrefix %><%- thisPage.id %>([0-9A-Za-z]+[0-9A-Za-z]).html <%- currentNumberPrefix %><%- thisPage.id %>.html?shop=$1&%{QUERY_STRING}
+<%
+	}
+}
+-%>

@@ -1,0 +1,20 @@
+/* button
+=========================== */
+.c-button{
+  border: 1px solid #404040;
+  display: block;
+  padding: .6em 1.5em;
+  font-size: 1.6rem;
+  text-align: center;
+  font-family: $m-font;
+  line-height: 1;
+  border-radius: 1.4em;
+  text-decoration: none;
+  @include link-color(#404040);
+  transition: all .4s ease-out;
+  
+  &:hover{
+    background-color: #404040;
+    @include link-color($white);
+  }
+}

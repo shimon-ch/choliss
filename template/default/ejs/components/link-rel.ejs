@@ -1,0 +1,81 @@
+<%
+/**
+ * canonical取得
+ */
+
+var getLinkCanonical = function(){
+
+	/*
+		[現状の仕様]
+		・PCサイトに対応するページがあるSPページ
+		・PCのindexページ
+		の2パターンにだけ付ける。
+	*/
+
+	var canonical = "";
+
+	// 該当ページpcのファイルが出力されているか
+	var existsPcFile = data.page.pc;
+
+	// canonicalが必要なページかどうか
+	var needsCanonical = data.device === "sp" || data.page.id === "index";
+
+	if( existsPcFile && needsCanonical ){
+
+		// PCファイルのパス
+		var canonicalFileName = data.pchome + data.numberPrefix + data.page.id + ".html";
+
+		// indexだったらrootに
+		if( data.page.id === "index" ){
+			canonicalFileName   = data.pcroot;
+		}
+
+		// 拠点コード利用ページならコードを付与
+		if ( data.page.name.indexOf("$THIS_SR_CODE") !== -1 ){
+			canonicalFileName   = data.pchome + data.numberPrefix + data.page.id + "<?php echo getShopData('shop_cd'); ?>.html";
+		}
+
+		canonical = '<link rel="canonical" href="<?php echo $CMN_siteDomain; ?>'+ canonicalFileName +'">\n';
+	}
+
+	return canonical;
+}
+
+
+/**
+ * alternate取得
+ */
+var getLinkAlternate = function(){
+
+	var alternate = "";
+
+	// 該当ページspのファイルが出力されているか
+	var existsSpFile = data.page.sp;
+
+	// alternateが必要なページかどうか
+	var needsAlternate = data.device === "pc";
+
+	if( existsSpFile && needsAlternate ){
+
+		// SPファイルのパス
+		var alternateFileName = data.sphome + data.page.id + ".html";
+
+		// indexだったらrootに
+		if( data.page.id === "index" ){
+			alternateFileName   = data.sproot;
+		}
+
+		// 拠点コード利用ページならコードを付与
+		if ( data.page.name.indexOf("$THIS_SR_CODE") !== -1 ){
+			alternateFileName   = data.sphome + data.page.id + "<?php echo getShopData('shop_cd'); ?>.html";
+		}
+
+		alternate = '<link rel="alternate" media="only screen and (max-width: 640px)" href="<?php echo $CMN_siteDomain; ?>'+ alternateFileName +'">\n';
+	}
+
+	return alternate;
+}
+
+
+data.component.result = getLinkCanonical() + getLinkAlternate();
+%>

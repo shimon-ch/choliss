@@ -1,0 +1,39 @@
+/* breadcrumb
+=============================== */
+.l-page-breadcrumb{
+  background-color: #cccccc;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.c-breadcrumb{
+  @include inner;
+  text-align: left;
+  padding: 0;
+  &__item{
+    display: inline-block;
+    font-size: 1.4rem;
+    vertical-align: bottom;
+    a{
+      @include link-color($white);
+      line-height: 1;
+      box-sizing: border-box;
+      display: inline-block;
+      text-decoration: none;
+      border-bottom: 1px solid;
+      &:hover{
+        border-color: transparent;
+        text-decoration: none;
+      }
+    }
+    + .c-breadcrumb__item{
+      &:before{
+        content: ">";
+        display: inline-block;
+        font-size: 1rem;
+        padding: 0 10px 0 6px;
+        vertical-align: middle;
+      }
+    }
+  }
+}

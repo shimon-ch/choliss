@@ -1,0 +1,16 @@
+/* coming-soon
+--------------------------- */
+.c-coming-soon{
+  padding: 100px 0;
+  text-align: center;
+  color: $key-color-01;
+  
+  &__head{
+    font-size: 3.4rem;
+    font-family: $en-font;
+  }
+  &__body{
+    padding-top: 8px;
+    font-size: 1.8rem;
+  }
+}

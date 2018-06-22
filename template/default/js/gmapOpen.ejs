@@ -1,0 +1,213 @@
+var infowindowArry = [];
+var mapObj = null;
+
+function gmapOpen(id, arr, zm, ce, page) {
+    google.maps.event.addDomListener(window, 'load', function() {
+        var mapId         = (id == undefined) ? 'gmap' : id; // gmap表示箇所のID
+
+        var cLat          = 31.666159;
+        var cLng          = 130.364166;
+
+        var cZoom         = (zm == undefined) ? 11 : zm; // 店舗が設定されていないときの拡大率
+        var wZoom         = 17; // iconがクリックされたときの拡大率
+
+        var iconImg       = "<%- data.pchome -%>img/gmap_marker.png";
+        var iconImgAt     = "<%- data.pchome -%>img/gmap_marker02.png";
+
+        var iconW = 38;
+        var iconH = 54;
+        var iconW_half = Math.floor(iconW/2);
+
+        var iconSize      = new google.maps.Size(iconW, iconH);
+        var iconPosition  = new google.maps.Point(0, 0);
+        var iconOffset    = new google.maps.Point(iconW_half, iconH);
+        var iconOffsetL   = new google.maps.Point(iconW_half+7, iconH);
+        var iconOffsetR   = new google.maps.Point(iconW_half-7, iconH);
+
+        var styleOptions  = [
+              {
+                "featureType": "administrative",
+                "stylers": [{ "gamma": 0.01 }]
+              },{
+                "stylers": [{ "saturation": -100 }]
+              },{
+                "featureType": "water",
+                "stylers": [{ "hue": "#00e5ff" },{ "saturation": 49 }]
+              },{
+                "featureType": "road","elementType": "geometry",
+                "stylers": [{ "hue": "#ff0000" },{ "gamma": 0.28 }]
+              },{
+                "featureType": "road","elementType": "labels.icon",
+                "stylers": [{ "hue": "#ff1100" },{ "saturation": 88 },{ "lightness": 35 }]
+              },{
+                "featureType": "poi","elementType": "labels.icon",
+                "stylers": [{ "gamma": 0.8 }]
+              },{
+                "featureType": "transit","elementType": "geometry",
+                "stylers": [{ "gamma": 0.47 }]
+              },{
+                "featureType": "transit.station",
+                "stylers": [{ "gamma": 0.6 }]
+              }
+            ];
+
+        var mapOptions = {
+            zoom: cZoom,
+            center: new google.maps.LatLng(),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            styles : styleOptions,
+            scaleControl: true,
+            scrollwheel: false,
+            overviewMapControlOptions: {
+                opened: false,
+            }
+        };
+        mapObj = new google.maps.Map(document.getElementById(mapId), mapOptions);
+
+
+        /* 地図の中心、拡大率を再セット */
+        // 引数 ce に値が入っていなければ
+        if (ce == undefined) {
+            // 指定したlat,lng（店舗一覧の中心座標）
+            mapObj.setCenter(new google.maps.LatLng(cLat, cLng));
+        }
+
+        // 引数 ce に値が入っていれば
+        else {
+            // indexに該当する店舗のlat,lngを参照
+
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i]['shop_cd'] == ce) {
+                    mapObj.setCenter(new google.maps.LatLng(arr[i]['lat'], arr[i]['lng']));
+                }
+            }
+        }
+        // 引数 zm に値が入っていれば zm を参照
+        if (zm != undefined)
+            mapObj.setZoom(zm);
+
+
+        $.each(arr, function(i) {
+
+            // 表示するiconに関するデータをPHPimport時の文字列から変数に変換する
+            arr[i]['marker'] = eval('(' + arr[i]['marker'] + ')');
+            arr[i]['mkrSz']  = eval('(' + arr[i]['mkrSz'] + ')');
+            arr[i]['mkrPos'] = eval('(' + arr[i]['mkrPos'] + ')');
+            arr[i]['mkrOf']  = eval('(' + arr[i]['mkrOf'] + ')');
+
+            // 店舗一覧の場合
+            if( ce === undefined ){
+                // 上から順番に判定して、最初にtrueになった値のマーカーを使う
+                var paramForIcons = {
+                    "ss" : arr[i]['smallstore'],
+                    "qs" : arr[i]['qualityselect'],
+                    "at" : arr[i]['shop_type'] === "at",
+                    "hc" : true
+                };
+                $.each(paramForIcons,function(key,val){
+                  if( val ){
+                    arr[i]['marker'] = "<%- data.pchome -%>img/gmap_marker_"+ key +".png";
+                    return false;
+                  }
+                });
+                arr[i]['mkrSz']  = new google.maps.Size(40, 50);
+                arr[i]['mkrPos'] = new google.maps.Point(0, 0);
+                arr[i]['mkrOf']  = new google.maps.Point(20, 50);
+            }
+
+            var latlng = new google.maps.LatLng(arr[i]['lat'], arr[i]['lng']);
+
+            var shoplink = ( typeof arr[i]['url'] == "undefined" || arr[i]['url'] === "" ) ? '<%- data.pchome -%>sr' + arr[i]['shop_cd'] + '.html' : arr[i]['url'];
+
+            var infoContent =
+                '<div class="gmapOpen_InfoWindow">' +
+                    '<dl class="gmapOpen_wrapContent">' +
+                        '<dt class="gmapOpen_shopName">' + arr[i]['shop_name'] + '</dt>' +
+                        '<dd class="gmapOpen_shopLocation">' +
+                            '<span class="gmapOpen_addressTitle">住所：</span>' +
+                            '<span class="gmapOpen_shopZip">〒' + arr[i]['zip'] + '</span>' +
+                            '<span class="gmapOpen_shopAddress">' + arr[i]['address'] + '</span>' +
+                        '</dd>' +
+                        '<dd class="gmapOpen_shopContact">' +
+                            '<span class="gmapOpen_telTitle">TEL：</span>' +
+                            '<span class="gmapOpen_shopTel">' + arr[i]['tel'] + '</span>' +
+                        '</dd>' +
+                        '<dd class="gmapOpen_shopUrl">' +
+                            '<a class="gmapOpen_shopLink" href="'+ shoplink +'" target="' + arr[i]['target'] + '">' +
+                                '<span class="gmapOpen_linkText">店舗情報をもっと見る</span>' +
+                            '</a>' +
+                        '</dd>' +
+                    '</dl>' +
+                '</div>';
+
+
+            var marker = new google.maps.Marker({
+                icon: new google.maps.MarkerImage(arr[i]['marker'], arr[i]['mkrSz'], arr[i]['mkrPos'], arr[i]['mkrOf'], arr[i]['mkrSz']),
+                position: latlng,
+                map: mapObj
+            });
+
+
+            if (page == undefined) {
+                var latlngClick = new google.maps.LatLng(arr[i]['lat'], Number(arr[i]['lng']));
+            }
+
+            // the smooth zoom function
+            function smoothZoom(map, max, cnt) {
+                if (cnt >= max) {
+                    return;
+                } else {
+                    z = google.maps.event.addListener(map, 'zoom_changed', function(event) {
+                        google.maps.event.removeListener(z);
+                        smoothZoom(map, max, cnt + 1);
+                    });
+                    setTimeout(function() {
+                        map.setZoom(cnt)
+                    }, 40); // 0ms is what I found to work well on my system -- it might not work well on all systems
+                }
+            }
+
+            if (ce == undefined) {
+                google.maps.event.addListener(marker, 'click', function(e) {
+                    map = marker.getMap();
+
+                    mapObj.setCenter(latlng);
+                    mapObj.setZoom(wZoom);
+                    // mapObj.panTo(latlngClick);
+                    // smoothZoom(map, wZoom, map.getZoom());
+
+
+                    $.each(infowindowArry, function(iw) {
+                        infowindowArry[iw].close(); // infowindowArryの中身を消す
+                    })
+
+                    var infowindow = new google.maps.InfoWindow({
+                        content: infoContent
+                    });
+                    infowindowArry.push(infowindow); // 配列にinfowindowを突っ込む
+                    infowindow.open(mapObj, marker); // infowindow開く
+                });
+            } else if (ce == 00) {
+                google.maps.event.addListener(marker, 'click', function(e) {
+                    map = marker.getMap();
+
+                    // mapObj.setCenter(latlng);
+                    // mapObj.setZoom(wZoom);
+                    mapObj.panTo(latlngClick);
+                    smoothZoom(map, wZoom, map.getZoom());
+
+
+                    $.each(infowindowArry, function(iw) {
+                        infowindowArry[iw].close(); // infowindowArryの中身を消す
+                    })
+
+                    var infowindow = new google.maps.InfoWindow({
+                        content: infoContent
+                    });
+                    infowindowArry.push(infowindow); // 配列にinfowindowを突っ込む
+                    infowindow.open(mapObj, marker); // infowindow開く
+                });
+            }
+        });
+    });
+};

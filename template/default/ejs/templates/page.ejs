@@ -1,0 +1,32 @@
+<% include ../../../../function -%>
+<% include ./_default -%>
+<% include('../../../../'+ data.path.local[data.device].ejs +'extends/'+ data.page.id,{data:data}) -%>
+<%- data.tpl('<setting-php>'); -%>
+<%- data.tpl('</setting-php>'); -%>
+<!DOCTYPE html>
+<%- data.tpl('<html>'); %>
+<%- data.tpl('<head>'); %>
+<%- data.tpl('<meta/>'); %>
+<%- data.tpl('<title/>'); %>
+<%- data.tpl('<link-rel/>'); -%>
+<%- data.tpl('<css/>'); %>
+<%- data.tpl('<ga/>'); %>
+<%- data.tpl('</head>'); %>
+<%- data.tpl('<body>'); %>
+<%- data.tpl('<wrapper>'); %>
+	<%- data.tpl('<header/>'); %>
+	<%- data.tpl('<breadcrumbs/>'); %>
+	<%- data.tpl('<page-heading>'); %>
+	<%- data.tpl('</page-heading>'); %>
+	<%- data.tpl('<main>'); %>
+		<%- data.tpl('<ie/>'); %>
+		<%- data.tpl('<contents>'); %>
+<%- include('../../../../'+ data.path.local[data.device].ejs + '/pages/'+ data.page.id,{data:data}) %>
+		<%- data.tpl('</contents>'); %>
+	<%- data.tpl('</main>'); %>
+	<%- data.tpl('<footer/>'); %>
+<%- data.tpl('</wrapper>'); %>
+<%- data.tpl('<js/>'); %>
+<%- data.tpl('<ga2/>'); %>
+<%- data.tpl('</body>'); %>
+<%- data.tpl('</html>'); %>
