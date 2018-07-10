@@ -1,6 +1,6 @@
 {
   "name": "gulp-boilerplate",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "gulpfile.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^8.6.2",
+    "autoprefixer": "^8.6.5",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
@@ -23,8 +23,8 @@
     "babel-register": "^6.26.0",
     "browser-sync": "^2.23.6",
     "css-mqpacker": "^6.0.2",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint": "^5.1.0",
+    "eslint-config-airbnb-base": "^13.0.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.10.0",
     "eslint-plugin-prettier": "^2.6.0",
