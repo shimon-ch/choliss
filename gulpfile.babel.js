@@ -270,23 +270,18 @@ export const reload = () => {
 // EJS
 // --------------------
 export const html = () => {
-  let jsondata = rootPaths.src + dataJson + 'sitemap.json';
 
-  for (let index = 0; index < jsondata.length; index++) {
-    console.log(jsondata[index]);
-  }
-
-  // return gulp
-  //   .src(`${rootPaths.src + tools.ejs}**/*.ejs`)
-  //   .pipe(cached('html'))
-  //   .pipe(progeny())
-  //   .pipe(
-  //     plumber({
-  //       errorHandler: notify.onError('<%= error.message %>'),
-  //     })
-  //   )
-  //   .pipe(ejs({}, {}, { ext: '.html' }))
-  //   .pipe(gulp.dest(rootPaths.dst));
+  return gulp
+    .src(`${rootPaths.src + tools.ejs}**/*.ejs`)
+    .pipe(cached('html'))
+    .pipe(progeny())
+    .pipe(
+      plumber({
+        errorHandler: notify.onError('<%= error.message %>'),
+      })
+    )
+    .pipe(ejs({}, {}, { ext: '.html' }))
+    .pipe(gulp.dest(rootPaths.dst));
 };
 
 // SASS
@@ -297,7 +292,7 @@ const sassOptions = {
   sourceComments: false,
 };
 
-export function css() {
+export const css = () => {
   return gulp
     .src(`${rootPaths.src + tools.sass}**/*.scss`)
     .pipe(
@@ -320,7 +315,7 @@ export function css() {
 
 // JS
 // --------------------
-export function js() {
+export const js = () => {
   return webpackStream(webpackConfig, webpack)
     .pipe(cached('js'))
     .pipe(progeny())
@@ -336,7 +331,7 @@ const imgType = {
   png: 'png',
 };
 
-export function img() {
+export const img = () => {
   return gulp
     .src(`${rootPaths.src + tools.img}/**/*.{jpg,png,gif,svg}`)
     .pipe(
@@ -366,7 +361,7 @@ export function img() {
 
 /* destroy
 ============================================================== */
-export function alldelete() {
+export const alldelete = () => {
   return del(
     [
       './source',
@@ -384,7 +379,7 @@ export function alldelete() {
 
 /* watch
 ============================================================== */
-export function watch() {
+export const watch = () => {
   gulp.watch(`${rootPaths.src + tools.ejs}**/*.ejs`, html);
   gulp.watch(`${rootPaths.src + tools.sass}**/*.scss`, css);
   gulp.watch(`${rootPaths.src + tools.js}**/*.js`, js);
@@ -396,8 +391,6 @@ export function watch() {
 
 export default gulp.series(sync, gulp.parallel(html, css, js, img), watch);
 
-/* watch
-============================================================== */
 // TODO
 // publicディレクトリをコピーしつつ、htmlをsjisに変換(変換するかどうかは判定有りにするかも)
 
