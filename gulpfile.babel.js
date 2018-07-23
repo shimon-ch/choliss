@@ -154,15 +154,15 @@ export const csvCreate = done => {
       });
 
       res.on('end', () => {
-        fs.writeFile(csvFilePath, responseString, err => {
-          if (err) {
-            console.log('errorです');
-          }
+        fs.writeFile(csvFilePath, responseString, () => {
+          return gulp
+            .src(`${rootPaths.src + dataCsv}*.csv`)
+            .pipe(csvtojson({ toArrayString: true }))
+            .pipe(prettify())
+            .pipe(gulp.dest(rootPaths.src + dataJson));
         });
       });
     });
-
-    console.log('CSVファイル出力に成功しました');
   }
 
   done();
@@ -175,11 +175,10 @@ export const csvToJson = done => {
         .src(`${rootPaths.src + dataCsv}*.csv`)
         .pipe(csvtojson({ toArrayString: true }))
         .pipe(prettify())
-        .pipe(gulp.dest(rootPaths.src + dataJson)),
+        .pipe(gulp.dest(rootPaths.src + dataJson))
+        .pipe(done()),
     5000
   );
-
-  done();
 };
 
 export const fileCopy = done => {
@@ -193,7 +192,7 @@ export const fileCopy = done => {
 
   const argv = minimist(process.argv.slice(2), args_setting);
 
-  console.dir(argv);
+  console.log(argv);
 
   if (argv.default === true) {
     for (let tool in tools) {
@@ -209,10 +208,32 @@ export const fileCopy = done => {
   } else {
     for (let tool in tools) {
       if (tool === 'data') continue;
-      fs.copySync(templatePath + argv + '/*', rootPaths.src + tool + '/', () => {
-        return console.log('template ' + argv + tool + ' をコピーしました');
-      });
+      fs.copySync(
+        templatePath + argv + '/*' + '/',
+        rootPaths.src + tool + '/',
+        () => {
+          return console.log('template ' + argv + tool + ' をコピーしました');
+        }
+      );
     }
+  }
+
+  done();
+};
+
+export const fileSet = done => {
+  const sitemapDataPath = rootPaths.src + dataJson + 'sitemap.json';
+  const sitemapData = JSON.parse(fs.readFileSync(sitemapDataPath, 'utf8'));
+
+  for (const pages in sitemapData) {
+    fs.outputFileSync(
+      rootPaths.src + tools.ejs + sitemapData[pages].page + '.ejs',
+      ''
+    );
+    fs.outputFileSync(
+      rootPaths.src + tools.sass + sitemapData[pages].page + '.scss',
+      ''
+    );
   }
 
   done();
@@ -224,8 +245,8 @@ export const fileCreate = async () => {
     mkdirTools,
     mkdirData,
     csvCreate,
-    csvToJson,
-    fileCopy
+    fileCopy,
+    fileSet
   )();
 };
 
