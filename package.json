@@ -2,7 +2,7 @@
   "name": "gulp-boilerplate",
   "version": "0.0.1",
   "description": "",
-  "main": "gulpfile.js",
+  "main": "gulpfile.js/index.js",
   "scripts": {
     "dev": "gulp",
     "start": "gulp fileCreate",
