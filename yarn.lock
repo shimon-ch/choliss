@@ -6342,12 +6342,12 @@ postcss-initial@^2.0.0:
     lodash.template "^4.2.4"
     postcss "^6.0.1"
 
-postcss-lab-function@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/postcss-lab-function/-/postcss-lab-function-1.0.1.tgz#f493a93edcd8379de716bc3aab156626c317ce3c"
+postcss-lab-function@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/postcss-lab-function/-/postcss-lab-function-1.1.0.tgz#1965cd4cfb380601129f29c59797a0df13463f48"
   dependencies:
     "@csstools/convert-colors" "^1.4.0"
-    postcss "^6.0.22"
+    postcss "^6.0.23"
     postcss-values-parser "^1.5.0"
 
 postcss-load-config@^1.2.0:
@@ -6415,8 +6415,8 @@ postcss-place@^3.0.1:
     postcss-values-parser "^1.5.0"
 
 postcss-preset-env@^5.1.0:
-  version "5.2.3"
-  resolved "https://registry.yarnpkg.com/postcss-preset-env/-/postcss-preset-env-5.2.3.tgz#7eed45419a786cb4b23fb44b80bbffe35b43f670"
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/postcss-preset-env/-/postcss-preset-env-5.3.0.tgz#568939a1c03e950ced2bdfe32822c316ac7d0b7f"
   dependencies:
     autoprefixer "^8.6.5"
     browserslist "^3.2.8"
@@ -6440,7 +6440,7 @@ postcss-preset-env@^5.1.0:
     postcss-gap-properties "^1.0.0"
     postcss-image-set-function "^2.0.0"
     postcss-initial "^2.0.0"
-    postcss-lab-function "^1.0.1"
+    postcss-lab-function "^1.1.0"
     postcss-logical "^1.1.1"
     postcss-media-minmax "^3.0.0"
     postcss-nesting "^6.0.0"
@@ -8104,7 +8104,7 @@ unc-path-regex@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
 
-undertaker-registry@^1.0.0:
+undertaker-registry@^1.0.0, undertaker-registry@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/undertaker-registry/-/undertaker-registry-1.0.1.tgz#5e4bda308e4a8a2ae584f9b9a4359a499825cc50"
 
