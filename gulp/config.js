@@ -1,8 +1,8 @@
-import path from 'path';
-import config from 'config';
+import path from 'path'
+import config from 'config'
 
 /* ========== Setting ========== */
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'development'
 
 // Project Directories information
 const dir = {

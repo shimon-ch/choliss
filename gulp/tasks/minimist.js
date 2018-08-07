@@ -13,8 +13,6 @@ class Minimist extends Registry {
       gulp.series(
         'clean',
         'copy',
-        config.defaultTasks.font,
-        config.defaultTasks.sprite,
         config.defaultTasks.image,
         'eslint',
         config.defaultTasks.js,

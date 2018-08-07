@@ -3,16 +3,18 @@
  * First task
  */
 
+import path from 'path'
 import Registry from 'undertaker-registry'
+import fs from 'fs-extra'
 import https from 'https';
+import csvtojson from 'gulp-csvtojson'
+import convertEncoding from 'gulp-convert-encoding'
+import request from 'request'
 
 import config from '../config'
 
 class Setting extends Registry {
-
-    // csvをjsonファイルに変換
-    //--------------------
-    export const mkdirRoots = done => {
+    export const mkdirRoots = callback => {
       for (const key in rootPaths) {
         fs.mkdir(rootPaths[key], err => {
           if (err) {
@@ -21,10 +23,10 @@ class Setting extends Registry {
         });
       }
 
-      done();
+      callback();
     };
 
-    export const mkdirTools = done => {
+    export const mkdirTools = callback => {
       for (const key in tools) {
         fs.mkdir(rootPaths.src + tools[key], err => {
           if (err) {
@@ -33,10 +35,10 @@ class Setting extends Registry {
         });
       }
 
-      done();
+      callback();
     };
 
-    export const mkdirData = done => {
+    export const mkdirData = callback => {
       for (const key in data) {
         fs.mkdir(rootPaths.src + tools.data + data[key], err => {
           if (err) {
@@ -45,10 +47,10 @@ class Setting extends Registry {
         });
       }
 
-      done();
+      callback();
     };
 
-    export const csvCreate = done => {
+    export const csvCreate = callback => {
       for (const key in dataFile.dataname) {
         const csvFilePath = `${rootPaths.src + dataCsv + key}.csv`;
         const URL = dataFile.dataname[key];
@@ -72,10 +74,10 @@ class Setting extends Registry {
         });
       }
 
-      done();
+      callback();
     };
 
-    export const csvToJson = done => {
+    export const csvToJson = callback => {
       setTimeout(
         () =>
           gulp
@@ -83,12 +85,12 @@ class Setting extends Registry {
             .pipe(csvtojson({ toArrayString: true }))
             .pipe(prettify())
             .pipe(gulp.dest(rootPaths.src + dataJson))
-            .pipe(done()),
+            .pipe(callback()),
         5000
       );
     };
 
-    export const fileCopy = done => {
+    export const fileCopy = callback => {
       const args_setting = {
         string: 'env',
         default: {
@@ -125,10 +127,10 @@ class Setting extends Registry {
         }
       }
 
-      done();
+      callback();
     };
 
-    export const fileSet = done => {
+    export const fileSet = callback => {
       const sitemapDataPath = rootPaths.src + dataJson + 'sitemap.json';
       const sitemapData = JSON.parse(fs.readFileSync(sitemapDataPath, 'utf8'));
 
@@ -143,10 +145,10 @@ class Setting extends Registry {
         );
       }
 
-      done();
+      callback();
     };
 
-    export const fileCreate = async () => {
+    export const fileCreate = () => {
       return gulp.series(
         mkdirRoots,
         mkdirTools,
