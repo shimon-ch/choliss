@@ -1,8 +1,8 @@
-const path = require('path');
-const webpack = require('webpack');
+import webpack from 'webpack'
 
 module.exports = {
-  entry: ['babel-polyfill', path.resolve('source/js', 'index.js')],
+  mode: 'development',
+  entry: ['@babel/polyfill', path.resolve('./source/js')],
   output: {
     path: path.resolve('public/assets/js'),
     filename: 'bundle.js',
@@ -16,7 +16,10 @@ module.exports = {
         options: {
           presets: [
             [
-              'env',
+              '@babel/preset-env',
+              {
+                'modules': false
+              },
               {
                 targets: {
                   node: 'current', // 動かしてるPCのNodeバージョン

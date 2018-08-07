@@ -12,6 +12,7 @@ import postcss from 'gulp-postcss'
 import postcssPresetEnv from 'postcss-preset-env'
 import cssmqpacker from 'css-mqpacker'
 import csso from 'gulp-csso'
+import browserSync from 'browser-sync';
 
 import config from '../config'
 
@@ -21,7 +22,7 @@ class Css extends Registry {
     const sassOptions = {
       outputStyle: 'expanded',
       sourceMap: true,
-      sourceComments: false,
+      sourceComments: false
     }
 
     const postcssOptions = [
@@ -30,7 +31,7 @@ class Css extends Registry {
       cssmqpacker
     ]
 
-    export const css = () => {
+    const css = () => {
       return gulp.src(path.join(rootPaths.src, tools.sass, '**/*.sass'))
         .pipe(
           plumber({
@@ -40,13 +41,14 @@ class Css extends Registry {
         .pipe(sourcemaps.init())
         .pipe(sass(sassOptions))
         .pipe(gulp.dest(assetsRoot + assets.css))
-        .pipe(postcss(postcssOptions)
+        .pipe(postcss(postcssOptions))
         .pipe(cssmqpacker())
         .pipe(csso())
         .pipe(sourcemaps.write('/maps/'))
         .pipe(gulp.dest(assetsRoot + assets.css))
-        .pipe(browserSync.reload({ stream: true }));
+        .pipe(browserSync.reload({ stream: true }))
     }
   }
+}
 
 export default new Css()

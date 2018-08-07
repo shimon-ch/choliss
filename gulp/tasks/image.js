@@ -13,8 +13,8 @@ import config from '../config'
 
 class Imagemin extends Registry {
   init(gulp) {
-    export const img = () => {
-      return gulp.src(path.join(rootPaths.src, tools.img, '**/*')
+    const img = () => {
+      return gulp.src(path.join(rootPaths.src, tools.img, '**/*'))
         .pipe(newer(path(assetsRoot, assets.img)))
         .pipe(
           plumber({
@@ -37,8 +37,11 @@ class Imagemin extends Registry {
             imagemin.gifsicle(),
           ])
         )
-        .pipe(gulp.dest(path(assetsRoot, assets.img));
+        .pipe(gulp.dest(path(assetsRoot, assets.img)))
     }
+
+    gulp.task('imagemin', img)
   }
+}
 
 export default new Imagemin()

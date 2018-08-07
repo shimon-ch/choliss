@@ -4,160 +4,162 @@
  */
 
 import path from 'path'
+import minimist from 'minimist'
 import Registry from 'undertaker-registry'
 import fs from 'fs-extra'
-import https from 'https';
-import csvtojson from 'gulp-csvtojson'
-import convertEncoding from 'gulp-convert-encoding'
-import request from 'request'
-
+import https from 'https'
+import csv from 'csvtojson'
+import prettierPlugin from 'gulp-prettier-plugin'
 import config from '../config'
 
 class Setting extends Registry {
-    export const mkdirRoots = callback => {
-      for (const key in rootPaths) {
-        fs.mkdir(rootPaths[key], err => {
+  init(gulp) {
+    const mkdirRoots = callback => {
+      for (const key in config.dir) {
+        fs.mkdir(config.dir[key], err => {
           if (err) {
-            console.log('errorです');
+            console.log('errorです')
           }
-        });
+        })
       }
 
-      callback();
-    };
+      callback()
+    }
 
-    export const mkdirTools = callback => {
-      for (const key in tools) {
-        fs.mkdir(rootPaths.src + tools[key], err => {
+    const mkdirTools = callback => {
+      for (const key in config.tools) {
+        fs.mkdir(path.join(config.dir.src, config.tools[key]), err => {
           if (err) {
-            console.log('errorです');
+            console.log('errorです')
           }
-        });
+        })
       }
 
-      callback();
-    };
+      callback()
+    }
 
-    export const mkdirData = callback => {
-      for (const key in data) {
-        fs.mkdir(rootPaths.src + tools.data + data[key], err => {
+    const mkdirData = callback => {
+      for (const key in config.data) {
+        fs.mkdir(path.join(config.dir.src, config.tools.data, config.data[key]), err => {
           if (err) {
-            console.log('errorです');
+            console.log('errorです')
           }
-        });
+        })
       }
 
-      callback();
-    };
+      callback()
+    }
 
-    export const csvCreate = callback => {
-      for (const key in dataFile.dataname) {
-        const csvFilePath = `${rootPaths.src + dataCsv + key}.csv`;
-        const URL = dataFile.dataname[key];
+    const csvToJson = callback => {
+      const dataLength = Object.keys(config.dataFile.dataname).length
+      let count = 1
 
-        https.get(URL, res => {
-          let responseString = '';
+      for (const key in config.dataFile.dataname) {
+        const csvFilePath = path.join(config.dataCsv, key + '.csv')
+        const URL = config.dataFile.dataname[key]
 
-          res.on('data', chunk => {
-            responseString += chunk;
-          });
-
-          res.on('end', () => {
-            fs.writeFile(csvFilePath, responseString, () => {
-              return gulp
-                .src(`${rootPaths.src + dataCsv}*.csv`)
-                .pipe(csvtojson({ toArrayString: true }))
-                .pipe(prettify())
-                .pipe(gulp.dest(rootPaths.src + dataJson));
-            });
-          });
-        });
+        csv({
+          noheader: false
+        })
+        .fromFile(https.request(URL))
+        .subscribe(() => {
+          if (count === dataLength){
+            console.log('処理が完了');
+            console.log(count);
+            return gulp.src(path.join(config.dir.src, config.dataJson, '*.json'))
+            .pipe(prettierPlugin(undefined, { filter: true }))
+            .pipe(gulp.dest(path.join(config.dir.src, config.dataJson)))
+          } else {
+            console.log('まだ処理が未完了');
+            count++
+            console.log(count);
+          }
+        })
+        .on('done', (error) => {
+          callback;
+        })
       }
+    }
 
-      callback();
-    };
-
-    export const csvToJson = callback => {
-      setTimeout(
-        () =>
-          gulp
-            .src(`${rootPaths.src + dataCsv}*.csv`)
-            .pipe(csvtojson({ toArrayString: true }))
-            .pipe(prettify())
-            .pipe(gulp.dest(rootPaths.src + dataJson))
-            .pipe(callback()),
-        5000
-      );
-    };
-
-    export const fileCopy = callback => {
+    const fileCopy = callback => {
       const args_setting = {
         string: 'env',
         default: {
           default: process.env.NODE_ENV || 'default/',
           hc: process.env.NODE_ENV || 'hc/',
         },
-      };
+      }
 
       const argv = minimist(process.argv.slice(2), args_setting);
 
       console.log(argv);
 
       if (argv.default === true) {
-        for (let tool in tools) {
+        for (let tool in config.tools) {
           if (tool === 'data') continue;
           fs.copySync(
-            templatePath + 'default/' + tool + '/',
-            rootPaths.src + tool + '/',
+            path.join(config.dir.tmp, 'default/', tool, '/'),
+            path.join(config.dir.src, tool, '/'),
             () => {
-              return console.log('template default ' + tool + ' をコピーしました');
+              return console.log('template default ' + tool + ' をコピーしました')
             }
-          );
+          )
         }
       } else {
-        for (let tool in tools) {
+        for (let tool in config.tools) {
           if (tool === 'data') continue;
           fs.copySync(
-            templatePath + argv + '/*' + '/',
-            rootPaths.src + tool + '/',
+            path.join(config.dir.tmp, argv, tool, '/'),
+            path.join(config.dir.src, tool, '/'),
             () => {
-              return console.log('template ' + argv + tool + ' をコピーしました');
+              return console.log('template ' + argv + tool + ' をコピーしました')
             }
-          );
+          )
         }
       }
 
-      callback();
-    };
+      callback()
+    }
 
-    export const fileSet = callback => {
-      const sitemapDataPath = rootPaths.src + dataJson + 'sitemap.json';
-      const sitemapData = JSON.parse(fs.readFileSync(sitemapDataPath, 'utf8'));
+    const fileSet = callback => {
+      const sitemapDataPath = path.join(config.dir.src, config.dataJson, 'sitemap.json')
+      const sitemapData = JSON.parse(fs.readFileSync(sitemapDataPath, 'utf8'))
+      console.log(sitemapDataPath);
 
-      for (const pages in sitemapData) {
+      for (const pages in config.sitemapData) {
         fs.outputFileSync(
-          rootPaths.src + tools.ejs + sitemapData[pages].page + '.ejs',
+          path.join(config.dir.src, config.tools.ejs, config.sitemapData[pages].page, '.ejs'),
           ''
         );
         fs.outputFileSync(
-          rootPaths.src + tools.sass + sitemapData[pages].page + '.scss',
+          path.join(config.dir.src, config.tools.sass, config.sitemapData[pages].page, '.scss'),
           ''
-        );
+        )
       }
 
-      callback();
-    };
+      callback()
+    }
 
-    export const fileCreate = () => {
+    gulp.task('mkdirRoots', mkdirRoots)
+    gulp.task('mkdirTools', mkdirTools)
+    gulp.task('mkdirData', mkdirData)
+    gulp.task('csvToJson', csvToJson)
+    gulp.task('fileCopy', fileCopy)
+    gulp.task('fileSet', fileSet)
+
+    const fileCreate = () => {
       return gulp.series(
-        mkdirRoots,
-        mkdirTools,
-        mkdirData,
-        csvCreate,
-        fileCopy,
-        fileSet
-      )();
-    };
-  }
+        `mkdirRoots`,
+        `mkdirTools`,
+        `mkdirData`,
+        `csvToJson`,
+        `fileCopy`,
+        'fileSet'
+      )()
+    }
 
-export new Setting()
+    gulp.task('setting', fileCreate)
+  }
+}
+
+export default new Setting()

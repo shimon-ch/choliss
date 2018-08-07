@@ -12,10 +12,9 @@ import newer from 'gulp-newer'
 
 import config from '../config'
 
-
-class Html extends Registry {
+class Ejs extends Registry {
   init(gulp) {
-    export const html = () => {
+    const html = () => {
       return gulp.src(path.join(rootPaths.src, tools.ejs, '**/*.ejs'))
         .pipe(newer(path.join(rootPaths.src, tools.ejs, '**/*.ejs')))
         .pipe(
@@ -25,8 +24,11 @@ class Html extends Registry {
         )
         .pipe(ejs({}, {}, { ext: '.html' }))
         .pipe(prettierPlugin(undefined, { filter: true }))
-        .pipe(gulp.dest(rootPaths.dst));
-    };
-  }
+        .pipe(gulp.dest(rootPaths.dst))
+    }
 
-export default new Html()
+    gulp.task('html', html)
+  }
+}
+
+export default new Ejs()

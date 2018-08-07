@@ -4,11 +4,12 @@ import setting from './gulp/tasks/setting'
 import ejs from './gulp/tasks/ejs'
 import css from './gulp/tasks/css'
 import js from './gulp/tasks/js'
-import img from './gulp/tasks/image'
+import imagemin from './gulp/tasks/image'
 import watch from './gulp/tasks/watch'
-import build from './gulp/task/build'
+import build from './gulp/tasks/build'
 
 gulp.registry(clean)
+gulp.registry(setting)
 gulp.registry(ejs)
 gulp.registry(css)
 gulp.registry(js)

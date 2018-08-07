@@ -12,7 +12,7 @@ import config from '../config'
 
 class Watch extends Registry {
   init(gulp) {
-    export const watch = callback => {
+    const watch = callback => {
       const BROWSER_SYNC_RELOAD_DELAY = 800
       let timer
       config.isWatching = true
@@ -46,6 +46,7 @@ class Watch extends Registry {
       callback();
     }
   }
+}
 
 export default new Watch()
 

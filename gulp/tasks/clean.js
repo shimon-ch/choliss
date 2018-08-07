@@ -4,14 +4,13 @@
  */
 
 import Registry from 'undertaker-registry'
-import path from 'path'
 import del from 'del'
-import config from '../config'
 
+import config from '../config'
 
 class Clean extends Registry {
   init(gulp) {
-    export const clean = callback => {
+    const clean = () => {
       return del(
         [
           './source',
@@ -25,9 +24,10 @@ class Clean extends Registry {
           console.log('source/,public/,build/ ディレクトリを削除しました。');
         }
       )
-
-      callback()
     }
+
+    gulp.task('clean', clean)
   }
+}
 
 export default new Clean()
