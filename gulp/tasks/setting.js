@@ -8,7 +8,6 @@ import minimist from 'minimist'
 import Registry from 'undertaker-registry'
 import fse from 'fs-extra'
 import https from 'https'
-import request from 'request'
 import csv from 'csvtojson'
 import prettierPlugin from 'gulp-prettier-plugin'
 import config from '../config'
@@ -43,33 +42,47 @@ class Setting extends Registry {
       callback()
     }
 
-    const csvToJson = () => {
+    const csvToJson = callback => {
       const dataLength = Object.keys(config.dataFile.dataname).length
       let count = 1
 
-      function jsonOutput() {
-        if (dataLength === count){
-          return gulp.src(path.join(config.dir.src, config.dataJson, '*.json'))
-          .pipe(prettierPlugin(undefined, { filter: true }))
-          .pipe(gulp.dest(path.join(config.dir.src, config.dataJson)))
-        } else {
-          ++count
-        }
-      }
+
 
       for (const key in config.dataFile.dataname) {
-        const csvFilePath = config.dataFile.dataname[key]
+        const URL = config.dataFile.dataname[key]
+        const csvFilePath = path.join(config.dataCsv, key + '.csv')
         const jsonFilePath = path.join(config.dataJson, key + '.json')
-        console.log(csv().fromFile(request.get(csvFilePath)))
 
-        csv()
-          .fromFile(request.get(csvFilePath))
-          .subscribe((data) => {
-            console.log(data)
-            fse.outputFileSync(jsonFilePath, data)
-          }).on('end', () =>{
-            jsonOutput()
+        https.get(URL, res => {
+          let responseString = ''
+
+          res.on('data', chunk => {
+            responseString += chunk
           })
+
+          res.on('end', () => {
+            fse.outputFile(csvFilePath, responseString)
+            .then(() => {
+              csv()
+              .fromFile(path.join(config.dataCsv, key + '.csv'))
+              .then((jsonObj) => {
+                fse.outputJson(jsonFilePath, jsonObj)
+              })
+              .then(() => {
+                return gulp.src(path.join(config.datJson, key + '.json'))
+                  .pipe(prettierPlugin(undefined, {filter: true}))
+                  .pipe(gulp.dest(path.join(config.dataJson)))
+              })
+            })
+            .then(() => {
+              if (dataLength === count) {
+                return callback()
+              } else {
+                count++
+              }
+            })
+          })
+        })
       }
     }
 
@@ -82,49 +95,59 @@ class Setting extends Registry {
         },
       }
 
-      const argv = minimist(process.argv.slice(2), args_setting);
+      const argv = minimist(process.argv.slice(2), args_setting)
 
-      console.log(argv);
+      const toolsLength = Object.keys(config.tools).length - 1 //dataが不要なので−１
+      let count = 1
 
       if (argv.default === true) {
         for (let tool in config.tools) {
-          if (tool === 'data') continue;
-          fse.copySync(
-            path.join(config.dir.tmp, 'default/', tool, '/'),
-            path.join(config.dir.src, tool, '/'),
-            () => {
-              return console.log('template default ' + tool + ' をコピーしました')
+          if (tool === 'data') continue
+
+          fse.copy(
+            path.join(config.dir.tmp, 'default', String(tool)),
+            path.join(config.dir.src, String(tool)))
+            .then(() => {
+              console.log('template default ' + tool + ' をコピーしました')
+              if (toolsLength === count) {
+                return callback()
+              } else {
+                count++
+              }
             }
           )
         }
       } else {
         for (let tool in config.tools) {
-          if (tool === 'data') continue;
-          fse.copySync(
-            path.join(config.dir.tmp, argv, tool, '/'),
-            path.join(config.dir.src, tool, '/'),
-            () => {
-              return console.log('template ' + argv + tool + ' をコピーしました')
+          if (tool === 'data') continue
+          fse.copy(
+            path.join(config.dir.tmp, argv, String(tool)),
+            path.join(config.dir.src, String(tool)))
+            .then(() => {
+              console.log('template default ' + tool + ' をコピーしました')
+              if (toolsLength === count) {
+                return callback()
+              } else {
+                count++
+              }
             }
           )
         }
       }
-
-      callback()
     }
 
     const fileSet = callback => {
-      const sitemapDataPath = path.join(config.dir.src, config.dataJson, 'sitemap.json')
-      const sitemapData = JSON.parse(fse.readFileSync(sitemapDataPath, 'utf8'))
-      console.log(sitemapDataPath);
+      const sitemapDataFile = path.join(config.dataJson, 'sitemap.json')
+      const sitemapData = JSON.parse(fse.readFileSync(sitemapDataFile, 'utf8'))
 
-      for (const pages in config.sitemapData) {
+      for (const pages in sitemapData) {
         fse.outputFileSync(
-          path.join(config.dir.src, config.tools.ejs, config.sitemapData[pages].page, '.ejs'),
+          path.join(config.dir.src, config.tools.ejs, sitemapData[pages].page + '.ejs'),
           ''
-        );
+        )
+
         fse.outputFileSync(
-          path.join(config.dir.src, config.tools.sass, config.sitemapData[pages].page, '.scss'),
+          path.join(config.dir.src, config.tools.sass, sitemapData[pages].page + '.scss'),
           ''
         )
       }
@@ -137,13 +160,14 @@ class Setting extends Registry {
     gulp.task('fileCopy', fileCopy)
     gulp.task('fileSet', fileSet)
 
-    const fileCreate = () => {
-      return gulp.series(
+    const fileCreate = callback => {
+      gulp.series(
         `mkdirs`,
         `csvToJson`,
         `fileCopy`,
-        'fileSet'
-      )()
+        'fileSet')()
+
+      callback()
     }
 
     gulp.task('setting', fileCreate)

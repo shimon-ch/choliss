@@ -4,10 +4,10 @@
   "description": "Static web page boilerplate with gulp.js",
   "main": "gulpfile.babel.js",
   "scripts": {
-    "dev": "gulp",
-    "start": "gulp fileCreate",
+    "dev": "gulp watch",
+    "start": "gulp setting",
     "clean": "gulp clean",
-    "bulild": "gulp build",
+    "build": "gulp build",
     "copy": "gulp fileCopy",
     "lint": "eslint",
     "lint:fix": "eslint --fix"
@@ -52,6 +52,6 @@
     "prettier-eslint": "^8.8.2",
     "prettier-eslint-cli": "^4.7.1",
     "webpack": "^4.16.5",
-    "webpack-stream": "^5.1.0"
+    "webpack-stream": "^5.1.1"
   }
 }

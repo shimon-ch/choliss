@@ -7,20 +7,20 @@ const env = process.env.NODE_ENV || 'development'
 const dir = {
   src: 'source/',
   dst: 'public/',
-  tmp: 'template/',
-};
+  tmp: 'template/'
+}
 
 /* ========== Path ========== */
 // Task Setting
-const tasks = {};
+const tasks = {}
 
 // Default Tools
 const defaultTasks = {
-  html: 'ejs',
+  html: 'html',
   css: 'css',
   js: 'js',
-  image: 'imagemin',
-};
+  image: 'imagemin'
+}
 
 // Default Tools
 const tools = {
@@ -28,28 +28,28 @@ const tools = {
   sass: 'sass',
   js: 'js',
   img: 'img',
-  data: 'data',
-};
+  data: 'data'
+}
 
 // 各種assetsのdist先
-const assetsDir = path.join(dir.src, 'assets');
+const assetsDir = path.join(dir.dst, 'assets')
 
 // dist先のassetsをまとめる
 const assets = {
   css: 'css',
   js: 'js',
-  img: 'img',
-};
+  img: 'img'
+}
 
 // 使ってるdata各種をまとめる
 const data = {
   csv: 'csv',
-  json: 'json',
-};
+  json: 'json'
+}
 
 // dataのパスをまとめる
-const dataCsv = path.join(dir.src, tools.data, data.csv);
-const dataJson = path.join(dir.src, tools.data, data.json);
+const dataCsv = path.join(dir.src, tools.data, data.csv)
+const dataJson = path.join(dir.src, tools.data, data.json)
 
 const dataFile = {
   dataname: {

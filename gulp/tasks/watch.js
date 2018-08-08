@@ -9,10 +9,9 @@ import browserSync from 'browser-sync';
 
 import config from '../config'
 
-
 class Watch extends Registry {
   init(gulp) {
-    const watch = callback => {
+    gulp.task('watch', () => {
       const BROWSER_SYNC_RELOAD_DELAY = 800
       let timer
       config.isWatching = true
@@ -25,26 +24,23 @@ class Watch extends Registry {
         },
       })
 
-      gulp.watch(path(rootPaths.src, tools.ejs, '**/*.ejs'), html)
-      gulp.watch(path(rootPaths.src, tools.sass, '**/*.scss'), css)
-      gulp.watch(path(rootPaths.src, tools.js, '**/*.js'), js)
-      gulp.watch(path(rootPaths.src, tools.img, '**/*'), img)
+      gulp.watch(path.join(config.dir.src, config.tools.ejs, '**/*.ejs'), gulp.task(config.defaultTasks.html))
+      gulp.watch(path.join(config.dir.src, config.tools.sass, '**/*.scss'), gulp.task(config.defaultTasks.css))
+      gulp.watch(path.join(config.dir.src, config.tools.js, '**/*.js'), gulp.task(config.defaultTasks.js))
+      gulp.watch(path.join(config.dir.src, config.tools.img, '**/*'), gulp.task(config.defaultTasks.image))
       gulp.watch(
-        'public/*'.replace(/\\/g, ' / '),
-        {
+        'public/*'.replace(/\\/g, ' / '), {
           verbose: true
         },
         file => {
           clearTimeout(timer)
           timer = setTimeout(() => {
-            browserSync.reload(file.relative)
-          },
-          BROWSER_SYNC_RELOAD_DELAY)
+              browserSync.reload(file.relative)
+            },
+            BROWSER_SYNC_RELOAD_DELAY)
         }
       )
-
-      callback();
-    }
+    })
   }
 }
 

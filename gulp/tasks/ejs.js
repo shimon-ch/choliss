@@ -5,29 +5,30 @@
 
 import Registry from 'undertaker-registry'
 import path from 'path'
+import plumber from 'gulp-plumber'
+import notify from 'gulp-notify'
+import newer from 'gulp-newer'
 import ejs from 'gulp-ejs'
 import frontMatter from 'gulp-front-matter'
 import prettierPlugin from 'gulp-prettier-plugin'
-import newer from 'gulp-newer'
+import browserSync from 'browser-sync'
 
 import config from '../config'
 
 class Ejs extends Registry {
   init(gulp) {
-    const html = () => {
-      return gulp.src(path.join(rootPaths.src, tools.ejs, '**/*.ejs'))
-        .pipe(newer(path.join(rootPaths.src, tools.ejs, '**/*.ejs')))
-        .pipe(
-          plumber({
+    gulp.task('html', () => {
+      return (
+        gulp.src(path.join(config.dir.src, config.tools.ejs, '**/*.ejs'))
+          .pipe(newer(path.join(config.dir.dst)))
+          .pipe(plumber({
             errorHandler: notify.onError('<%= error.message %>'),
-          })
-        )
-        .pipe(ejs({}, {}, { ext: '.html' }))
-        .pipe(prettierPlugin(undefined, { filter: true }))
-        .pipe(gulp.dest(rootPaths.dst))
-    }
-
-    gulp.task('html', html)
+          }))
+          .pipe(ejs({}, {}, { ext: '.html' }))
+          .pipe(gulp.dest(config.dir.dst))
+          .pipe(browserSync.reload())
+      )
+    })
   }
 }
 
