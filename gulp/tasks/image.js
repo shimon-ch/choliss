@@ -11,8 +11,6 @@ import newer from 'gulp-newer'
 import imagemin from 'gulp-imagemin'
 import pngquant from 'imagemin-pngquant'
 import mozjpeg from 'imagemin-mozjpeg'
-import browserSync from 'browser-sync'
-
 import config from '../config'
 
 class Imagemin extends Registry {
@@ -29,7 +27,7 @@ class Imagemin extends Registry {
           .pipe(
             imagemin([
               pngquant({
-                quality: '70-80', // 画質
+                quality: '75-85', // 画質
                 speed: 1, // 最低のスピード
                 floyd: 0, // ディザリングなし
               }),

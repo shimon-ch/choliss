@@ -12,8 +12,6 @@ import webpack from 'webpack'
 import webpackConfig from '../../webpack.config'
 import webpackStream from 'webpack-stream'
 import prettierPlugin from 'gulp-prettier-plugin'
-import browserSync from 'browser-sync'
-
 import config from '../config'
 
 class Js extends Registry {

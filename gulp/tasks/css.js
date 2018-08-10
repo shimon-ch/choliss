@@ -8,15 +8,12 @@ import path from 'path'
 import plumber from 'gulp-plumber'
 import notify from 'gulp-notify'
 import newer from 'gulp-newer'
-import autoprefixer from 'autoprefixer'
 import sass from 'gulp-sass'
 import sourcemaps from 'gulp-sourcemaps'
 import postcss from 'gulp-postcss'
 import postcssPresetEnv from 'postcss-preset-env'
 import cssmqpacker from 'css-mqpacker'
 import csso from 'gulp-csso'
-import browserSync from 'browser-sync'
-
 import config from '../config'
 
 class Css extends Registry {
@@ -29,12 +26,15 @@ class Css extends Registry {
       }
 
       const postcssOptions = [
-        autoprefixer({ browsers: [
+        postcssPresetEnv({
+          browsers: [
             'last 2 versions',
             'Android >= 6.0'
-          ]}
-        ),
-        postcssPresetEnv(),
+          ],
+          autoprefixer: {
+            grid: true
+          }
+        }),
         cssmqpacker()
       ]
 

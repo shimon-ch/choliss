@@ -7,7 +7,6 @@ import path from 'path'
 import minimist from 'minimist'
 import Registry from 'undertaker-registry'
 import fse from 'fs-extra'
-import https from 'https'
 import request from 'request'
 import csv from 'csvtojson'
 import prettierPlugin from 'gulp-prettier-plugin'
@@ -115,8 +114,15 @@ class Setting extends Registry {
           if (tool === 'data') continue
 
           fse.copy(
-            path.join(config.dir.tmp, 'default', String(tool)),
-            path.join(config.dir.src, String(tool)))
+            path.join(config.dir.tmp, 'default', tool),
+            path.join(config.dir.src, tool),
+            {
+              overwrite: false,
+              errorOnExist: true,
+              filter: false
+            }, () => {
+              console.log('ファイルが存在していました')
+            })
             .then(() => {
               console.log('template default ' + tool + ' をコピーしました')
               if (toolsLength === count) {
@@ -131,8 +137,8 @@ class Setting extends Registry {
         for (let tool in config.tools) {
           if (tool === 'data') continue
           fse.copy(
-            path.join(config.dir.tmp, argv, String(tool)),
-            path.join(config.dir.src, String(tool)))
+            path.join(config.dir.tmp, argv, tool),
+            path.join(config.dir.src, tool))
             .then(() => {
               console.log('template default ' + tool + ' をコピーしました')
               if (toolsLength === count) {
@@ -175,7 +181,14 @@ class Setting extends Registry {
         `mkdirs`,
         `csvToJson`,
         `fileCopy`,
-        'fileSet')()
+        'fileSet',
+        'html',
+        'css',
+        'js',
+        'imagemin'
+      )()
+
+      // TODO json整形タスクも追加する
 
       callback()
     }

@@ -29,7 +29,7 @@ class Watch extends Registry {
       browserSync.init({
         ui: false,
         server: {
-          baseDir: 'public/',
+          baseDir: 'public/index.html',
         },
       })
 
