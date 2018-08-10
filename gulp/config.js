@@ -19,7 +19,9 @@ const defaultTasks = {
   html: 'html',
   css: 'css',
   js: 'js',
-  image: 'imagemin'
+  image: 'imagemin',
+  reload: 'reload',
+  stream: 'stream-reload'
 }
 
 // Default Tools

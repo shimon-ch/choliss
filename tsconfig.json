@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "allowJs": true,
-    "outDir": "build"
-  },
-  "exclude": ["node_modules"],
-  "files": ["typings/index.d.ts", "entry.ts"]
+    "target": "es6",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "lib": [
+      "dom",
+      "es2017"
+    ]
+  }
 }

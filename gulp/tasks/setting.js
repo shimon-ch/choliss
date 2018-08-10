@@ -8,6 +8,7 @@ import minimist from 'minimist'
 import Registry from 'undertaker-registry'
 import fse from 'fs-extra'
 import https from 'https'
+import request from 'request'
 import csv from 'csvtojson'
 import prettierPlugin from 'gulp-prettier-plugin'
 import config from '../config'
@@ -46,43 +47,52 @@ class Setting extends Registry {
       const dataLength = Object.keys(config.dataFile.dataname).length
       let count = 1
 
-
-
       for (const key in config.dataFile.dataname) {
         const URL = config.dataFile.dataname[key]
         const csvFilePath = path.join(config.dataCsv, key + '.csv')
         const jsonFilePath = path.join(config.dataJson, key + '.json')
 
-        https.get(URL, res => {
-          let responseString = ''
-
-          res.on('data', chunk => {
-            responseString += chunk
-          })
-
-          res.on('end', () => {
-            fse.outputFile(csvFilePath, responseString)
-            .then(() => {
-              csv()
-              .fromFile(path.join(config.dataCsv, key + '.csv'))
-              .then((jsonObj) => {
-                fse.outputJson(jsonFilePath, jsonObj)
-              })
-              .then(() => {
-                return gulp.src(path.join(config.datJson, key + '.json'))
-                  .pipe(prettierPlugin(undefined, {filter: true}))
-                  .pipe(gulp.dest(path.join(config.dataJson)))
-              })
-            })
-            .then(() => {
-              if (dataLength === count) {
-                return callback()
-              } else {
-                count++
-              }
-            })
-          })
+        csv()
+        .fromStream(request.get(URL))
+        .then((json) => {
+          fse.outputJson(jsonFilePath, json)
         })
+        .then(() => {
+          if (dataLength === count) {
+            return callback()
+          } else {
+            count++
+          }
+        })
+
+        // https.get(URL, res => {
+        //   let responseString = ''
+
+        //   res.on('data', chunk => {
+        //     responseString += chunk
+        //   })
+
+        //   res.on('end', () => {
+        //     fse.outputFile(csvFilePath, responseString)
+        //     .then(() => {
+        //       csv()
+        //         .fromFile(csvFilePath)
+        //         .then((jsonObj) => {
+        //           fse.outputJson(jsonFilePath, jsonObj)
+        //         })
+        //     })
+        //     .then(() => {
+        //       if (dataLength === count) {
+        //         gulp.src(jsonFilePath)
+        //           .pipe(prettierPlugin(undefined, { filter: true }))
+        //           .pipe(gulp.dest(config.dataJson))
+        //         return callback()
+        //       } else {
+        //         count++
+        //       }
+        //     })
+        //   })
+        // })
       }
     }
 

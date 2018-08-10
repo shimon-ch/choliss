@@ -9,6 +9,7 @@ import plumber from 'gulp-plumber'
 import notify from 'gulp-notify'
 import newer from 'gulp-newer'
 import webpack from 'webpack'
+import webpackConfig from '../../webpack.config'
 import webpackStream from 'webpack-stream'
 import prettierPlugin from 'gulp-prettier-plugin'
 import browserSync from 'browser-sync'
@@ -19,17 +20,16 @@ class Js extends Registry {
   init(gulp) {
     gulp.task('js', () => {
       return (
-        gulp.src(path.join(config.dir.src, config.tools.js, '**/*.js'))
+        gulp.src(path.join(config.dir.src, config.tools.js, '**/*.ts'))
           .pipe(newer(path.join(config.assetsDir, config.assets.js)))
           .pipe(plumber({
             errorHandler: notify.onError('<%= error.message %>'),
           }))
-          .pipe(webpackStream(require('../../webpack.config.js')))
+          .pipe(webpackStream(webpackConfig, webpack))
           .pipe(prettierPlugin(undefined, {
             filter: true
           }))
           .pipe(gulp.dest(path.join(config.assetsDir, config.assets.js)))
-          .pipe(browserSync.reload())
       )
     })
   }

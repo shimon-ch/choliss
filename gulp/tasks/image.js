@@ -43,7 +43,6 @@ class Imagemin extends Registry {
             ])
           )
           .pipe(gulp.dest(path.join(config.assetsDir, config.assets.img)))
-          .pipe(browserSync.reload({stream: true}))
       )
     })
   }

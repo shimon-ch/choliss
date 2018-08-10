@@ -1,30 +1,27 @@
-import webpack from 'webpack'
-import path from 'path'
+import path from 'path';
 
 module.exports = {
   mode: 'development',
-  entry: ['@babel/polyfill', path.resolve('./source/js')],
+  entry: ['@babel/polyfill', path.resolve(__dirname, 'source/js/main')],
   output: {
-    path: path.resolve('public/assets/js'),
+    path: path.resolve(__dirname, 'public/assets/js'),
     filename: 'bundle.js',
   },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.json']
+  },
   module: {
-    rules: [
-      {
-        test: /\.js$/,
+    rules: [{
+        test: /\.(tsx?)|(js)$/,
         exclude: path.resolve('node_modules'),
         loader: 'babel-loader',
         options: {
           presets: [
-            [
-              '@babel/preset-env',
-              {
-                'modules': false
-              },
+            ['@babel/preset-env',
               {
                 targets: {
-                  node: 'current', // 動かしてるPCのNodeバージョン
-                  browsers: 'last 2 versions', // 各種ブラウザの直近2バージョン
+                  node: 'current',
+                  browsers: 'last 2 versions',
                 },
               },
             ],

@@ -11,7 +11,6 @@ import newer from 'gulp-newer'
 import ejs from 'gulp-ejs'
 import frontMatter from 'gulp-front-matter'
 import prettierPlugin from 'gulp-prettier-plugin'
-import browserSync from 'browser-sync'
 
 import config from '../config'
 
@@ -26,7 +25,6 @@ class Ejs extends Registry {
           }))
           .pipe(ejs({}, {}, { ext: '.html' }))
           .pipe(gulp.dest(config.dir.dst))
-          .pipe(browserSync.reload())
       )
     })
   }

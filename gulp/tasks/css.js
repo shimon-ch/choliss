@@ -51,7 +51,6 @@ class Css extends Registry {
           .pipe(csso())
           .pipe(sourcemaps.write('/maps/'))
           .pipe(gulp.dest(path.join(config.assetsDir, config.assets.css)))
-          .pipe(browserSync.reload({stream: true}))
       )
     })
   }
