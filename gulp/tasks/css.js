@@ -15,7 +15,7 @@ import sourcemaps from 'gulp-sourcemaps'
 import postcss from 'gulp-postcss'
 import postcssPresetEnv from 'postcss-preset-env'
 import cssmqpacker from 'css-mqpacker'
-import csso from 'gulp-csso'
+import cssnano from 'cssnano'
 import config from '../config'
 
 class Css extends Registry {
@@ -40,6 +40,7 @@ class Css extends Registry {
             grid: true
           }
         }),
+        cssnano(),
         cssmqpacker()
       ]
 
@@ -54,7 +55,6 @@ class Css extends Registry {
           .pipe(sass(sassOptions))
           .pipe(gulp.dest(path.join(config.assetsDir, config.assets.css)))
           .pipe(postcss(postcssOptions))
-          .pipe(csso())
           .pipe(sourcemaps.write('/maps/'))
           .pipe(gulp.dest(path.join(config.assetsDir, config.assets.css)))
       )
