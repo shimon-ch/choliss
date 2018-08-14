@@ -4,11 +4,16 @@ import path from 'path'
 const env = process.env.NODE_ENV || 'development'
 
 // Project Directories information
+const projectName = 'test-site'
+
 const dir = {
   src: 'source/',
   dst: 'public/',
   tmp: 'template/'
 }
+
+dir.src = dir.src + projectName
+dir.dst = dir.dst + projectName
 
 /* ========== Path ========== */
 // Task Setting

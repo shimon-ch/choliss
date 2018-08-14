@@ -27,9 +27,8 @@ class Watch extends Registry {
 
       // BrowserSync
       browserSync.init({
-        ui: false,
         server: {
-          baseDir: 'public/index.html',
+          baseDir: config.dir.dst,
         },
       })
 
@@ -37,6 +36,18 @@ class Watch extends Registry {
       gulp.watch(path.join(config.dir.src, config.tools.sass, '**/*.scss'), gulp.series(config.defaultTasks.css, config.defaultTasks.stream))
       gulp.watch(path.join(config.dir.src, config.tools.js, '**/*.ts'), gulp.series(config.defaultTasks.js, config.defaultTasks.reload))
       gulp.watch(path.join(config.dir.src, config.tools.img, '**/*'), gulp.series(config.defaultTasks.image, config.defaultTasks.stream))
+      gulp.watch(
+        'public/*'.replace(/\\/g, ' / '), {
+          verbose: true
+        },
+        file => {
+          clearTimeout(timer)
+          timer = setTimeout(() => {
+              browserSync.reload(file.relative)
+            },
+            BROWSER_SYNC_RELOAD_DELAY)
+        }
+      )
     })
   }
 }

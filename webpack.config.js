@@ -1,10 +1,11 @@
 import path from 'path';
+import config from './gulp/config';
 
 module.exports = {
   mode: 'development',
-  entry: ['@babel/polyfill', path.resolve(__dirname, 'source/js/main')],
+  entry: ['@babel/polyfill', path.resolve(__dirname, config.dir.src, 'js/main')],
   output: {
-    path: path.resolve(__dirname, 'public/assets/js'),
+    path: path.resolve(__dirname, config.dir.src, 'assets/js'),
     filename: 'bundle.js',
   },
   resolve: {

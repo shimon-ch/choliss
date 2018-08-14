@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- meta -->
+  <meta charset="UTF-8">
+  <meta name="description" content="<%= file.data.header.description %>">
+  <meta name="keywords" content="<%= file.data.header.keywords %>">
+  <title><%= file.data.header.title %> - <%= file.data.header.name %></title>
+  <!-- link -->
+  <% file.data.css.forEach(cssItem => { %><link rel="stylesheet" href="<%= cssItem %>"><% }) %>
+</head>
+<body>
+  <%- contents %>
+  <% file.data.js.forEach(jsItem => { %><script src="<%= jsItem %>"></script><% }) %>
+</body>
+</html>

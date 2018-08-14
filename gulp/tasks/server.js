@@ -13,7 +13,7 @@ class Server extends Registry {
     export const sync = callback => {
       browserSync({
         server: {
-          baseDir: 'public/',
+          baseDir: dir.dst,
           index: 'index.html',
         },
       })

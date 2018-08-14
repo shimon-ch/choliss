@@ -9,6 +9,8 @@ import plumber from 'gulp-plumber'
 import notify from 'gulp-notify'
 import newer from 'gulp-newer'
 import sass from 'gulp-sass'
+import sassGlob from 'gulp-sass-glob'
+import packageImporter from 'node-sass-package-importer'
 import sourcemaps from 'gulp-sourcemaps'
 import postcss from 'gulp-postcss'
 import postcssPresetEnv from 'postcss-preset-env'
@@ -22,7 +24,10 @@ class Css extends Registry {
       const sassOptions = {
         outputStyle: 'expanded',
         sourceMap: true,
-        sourceComments: false
+        sourceComments: false,
+        importer: packageImporter({
+          extensions: ['.scss', '.css']
+        })
       }
 
       const postcssOptions = [
@@ -45,6 +50,7 @@ class Css extends Registry {
             errorHandler: notify.onError('<%= error.message %>'),
           }))
           .pipe(sourcemaps.init())
+          .pipe(sassGlob())
           .pipe(sass(sassOptions))
           .pipe(gulp.dest(path.join(config.assetsDir, config.assets.css)))
           .pipe(postcss(postcssOptions))
