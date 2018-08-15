@@ -61,6 +61,7 @@
     "prettier-eslint-cli": "^4.7.1",
     "typescript": "^3.0.1",
     "webpack": "^4.16.5",
-    "webpack-stream": "^5.1.1"
+    "webpack-stream": "^5.1.1",
+    "yakuhanjp": "^3.0.0"
   }
 }
