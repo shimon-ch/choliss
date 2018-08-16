@@ -158,7 +158,7 @@ class Setting extends Registry {
       const ejsScss = fs.readFileSync(path.join(config.dir.tmp, 'template.scss'), 'utf-8')
 
       for (const pages in sitemapData) {
-        if ( sitemapData[pages].page === 'index' ){
+        if (sitemapData[pages].page.category === 'index') {
           fileExistCheck(path.join(config.dir.src, config.tools.ejs, sitemapData[pages].page + '.ejs'))
 
           if (!isExist){
@@ -185,7 +185,7 @@ class Setting extends Registry {
         fileExistCheck(path.join(config.dir.src, config.tools.sass, sitemapData[pages].page + '.scss'))
         if (!isExist) {
           fse.outputFileSync(
-            path.join(config.dir.src, config.tools.sass, 'project', sitemapData[pages].page + '.scss'), ejsScss
+            path.join(config.dir.src, config.tools.sass, 'object/project', sitemapData[pages].page + '.scss'), ejsScss
           )
         } else {
           console.log('すでにファイルが存在していました')
