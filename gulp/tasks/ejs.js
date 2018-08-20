@@ -11,6 +11,7 @@ import notify from 'gulp-notify'
 import newer from 'gulp-newer'
 import ejs from 'gulp-ejs'
 import frontMatter from 'gulp-front-matter'
+import data from 'gulp-data'
 import layout1 from 'layout1'
 import config from '../config'
 
@@ -22,8 +23,7 @@ class Ejs extends Registry {
         src: [
           path.join(config.dir.src, config.tools.ejs, '**/*.ejs'),
           path.join('!.', config.dir.src, config.tools.ejs, '**/_*.ejs'),
-        ],
-        dist: './public/'
+        ]
       }
     }
 
@@ -34,11 +34,14 @@ class Ejs extends Registry {
           .pipe(plumber({
             errorHandler: notify.onError('<%= error.message %>'),
           }))
+          .pipe(data(file => {
+            return { 'filename': file.path }
+          }))
           .pipe(frontMatter({
             property: 'data'
           }))
           .pipe(layout1.ejs(
-            file => `${path.join(config.dir.src, config.tools.ejs)}/layout/${file.data.layout || 'default'}.ejs`
+            file => `${path.join(config.dir.src, config.tools.ejs)}/layout/${file.data.layout || '_default'}.ejs`
           ))
           .pipe(ejs({}, {}, { ext: '.html' }))
           .pipe(prettify({
