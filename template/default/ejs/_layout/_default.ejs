@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <!-- meta -->
-  <meta charset="UTF-8">
-  <meta name="description" content="<%= file.data.header.description %>">
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title><%= file.data.header.title %> - <%= file.data.header.name %></title>
-  <!-- link -->
+  <meta name="description" content="ページの説明">
+  <meta name="robots" content="index,follow">
+  <meta name="googlebot" content="index,follow">
+  <meta name="google" content="nositelinkssearchbox">
+  <meta name="google" content="notranslate">
+  <meta name="google-site-verification" content="verification_token">
+  <meta name="format-detection" content="telephone=no">
+  <title><%= file.data.header.title %> - <%= file.data.header.name %></title>
   <% file.data.css.forEach(cssItem => { %><link rel="stylesheet" href="<%= cssItem %>"><% }) %>
 </head>
 <body>

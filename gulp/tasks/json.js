@@ -5,14 +5,7 @@
 
 import Registry from 'undertaker-registry'
 import path from 'path'
-import prettify from 'gulp-jsbeautifier'
-import plumber from 'gulp-plumber'
-import notify from 'gulp-notify'
 import newer from 'gulp-newer'
-import ejs from 'gulp-ejs'
-import frontMatter from 'gulp-front-matter'
-import data from 'gulp-data'
-import layout1 from 'layout1'
 import config from '../config'
 
 class Ejs extends Registry {

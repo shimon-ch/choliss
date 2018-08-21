@@ -4,7 +4,7 @@ import path from 'path'
 const env = process.env.NODE_ENV || 'development'
 
 // Project Directories information
-const projectName = 'test-site'
+const projectName = ''
 
 const dir = {
   src: 'source/',
