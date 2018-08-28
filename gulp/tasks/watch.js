@@ -15,11 +15,6 @@ class Watch extends Registry {
       callback()
     })
 
-    gulp.task('stream-reload', callback => {
-      browserSync.reload({ stream: true })
-      callback()
-    })
-
     gulp.task('watch', () => {
       const BROWSER_SYNC_RELOAD_DELAY = 800
       let timer
@@ -33,9 +28,9 @@ class Watch extends Registry {
       })
 
       gulp.watch(path.join(config.dir.src, config.tools.ejs, '**/*.ejs'), gulp.series(config.defaultTasks.html, config.defaultTasks.reload))
-      gulp.watch(path.join(config.dir.src, config.tools.sass, '**/*.scss'), gulp.series(config.defaultTasks.css, config.defaultTasks.stream))
+      gulp.watch(path.join(config.dir.src, config.tools.sass, '**/*.scss'), gulp.series(config.defaultTasks.css))
       gulp.watch(path.join(config.dir.src, config.tools.js, '**/*.ts'), gulp.series(config.defaultTasks.js, config.defaultTasks.reload))
-      gulp.watch(path.join(config.dir.src, config.tools.img, '**/*'), gulp.series(config.defaultTasks.image, config.defaultTasks.stream))
+      gulp.watch(path.join(config.dir.src, config.tools.img, '**/*'), gulp.series(config.defaultTasks.image))
       gulp.watch(
         'public/*'.replace(/\\/g, ' / '), {
           verbose: true

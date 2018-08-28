@@ -5,6 +5,7 @@
 
 import Registry from 'undertaker-registry'
 import path from 'path'
+import browserSync from 'browser-sync'
 import plumber from 'gulp-plumber'
 import notify from 'gulp-notify'
 import newer from 'gulp-newer'
@@ -57,6 +58,7 @@ class Css extends Registry {
           .pipe(postcss(postcssOptions))
           .pipe(sourcemaps.write('/maps/'))
           .pipe(gulp.dest(path.join(config.assetsDir, config.assets.css)))
+          .pipe(browserSync.stream())
       )
     })
   }

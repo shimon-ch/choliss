@@ -5,6 +5,7 @@
 
 import Registry from 'undertaker-registry'
 import path from 'path'
+import browserSync from 'browser-sync'
 import plumber from 'gulp-plumber'
 import notify from 'gulp-notify'
 import newer from 'gulp-newer'
@@ -41,6 +42,7 @@ class Imagemin extends Registry {
             ])
           )
           .pipe(gulp.dest(path.join(config.assetsDir, config.assets.img)))
+          .pipe(browserSync.stream())
       )
     })
   }
